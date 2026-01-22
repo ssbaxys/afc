@@ -242,6 +242,17 @@
         <img id="ticket-lightbox-img" src="" alt="Увеличенное изображение">
     </div>
 
+    <div id="notice-modal" class="notice-overlay">
+        <div class="notice-panel">
+            <h4 id="notice-title">Сообщение</h4>
+            <p id="notice-message"></p>
+            <div class="flex justify-center gap-3">
+                <button id="notice-confirm" class="notice-btn">Ок</button>
+                <button id="notice-cancel" class="notice-btn hidden">Отмена</button>
+            </div>
+        </div>
+    </div>
+
     <div id="user-tickets-modal" class="fixed inset-0 z-[1200] hidden items-center justify-center bg-black/80 backdrop-blur-sm">
         <div class="modal-panel">
             <div class="modal-header">
@@ -388,6 +399,12 @@
         const ticketForm = document.getElementById('ticket-form');
         const ticketSubmit = document.getElementById('ticket-submit');
 
+        const noticeModal = document.getElementById('notice-modal');
+        const noticeTitle = document.getElementById('notice-title');
+        const noticeMessage = document.getElementById('notice-message');
+        const noticeConfirm = document.getElementById('notice-confirm');
+        const noticeCancel = document.getElementById('notice-cancel');
+
         const googleProvider = new GoogleAuthProvider();
         googleProvider.setCustomParameters({ prompt: 'select_account' });
 
@@ -409,6 +426,35 @@
             authErrorEl.textContent = '';
             authErrorEl.classList.add('hidden');
         };
+
+        const openNotice = (title, message, confirmText = 'Ок') => new Promise(resolve => {
+            noticeTitle.textContent = title;
+            noticeMessage.textContent = message;
+            noticeConfirm.textContent = confirmText;
+            noticeCancel.classList.add('hidden');
+            noticeConfirm.onclick = () => {
+                noticeModal.classList.remove('active');
+                resolve(true);
+            };
+            noticeModal.classList.add('active');
+        });
+
+        const openConfirm = (title, message, confirmText = 'Подтвердить', cancelText = 'Отмена') => new Promise(resolve => {
+            noticeTitle.textContent = title;
+            noticeMessage.textContent = message;
+            noticeConfirm.textContent = confirmText;
+            noticeCancel.textContent = cancelText;
+            noticeCancel.classList.remove('hidden');
+            noticeConfirm.onclick = () => {
+                noticeModal.classList.remove('active');
+                resolve(true);
+            };
+            noticeCancel.onclick = () => {
+                noticeModal.classList.remove('active');
+                resolve(false);
+            };
+            noticeModal.classList.add('active');
+        });
 
         const makeEmailFromNick = (nick) => `${nick.toLowerCase()}@afc.local`;
 
@@ -516,7 +562,7 @@
                         });
                     }
                 } catch (error) {
-                    showError('Ошибка входа через Google: ' + error.message);
+                    openNotice('Ошибка входа', 'Не удалось войти через Google. Попробуйте позже.');
                 }
             });
         }
@@ -533,8 +579,9 @@
                     });
                     linkGoogleBtn.textContent = 'Google привязан';
                     linkGoogleBtn.disabled = true;
+                    await openNotice('Готово', 'Аккаунт Google успешно привязан.');
                 } catch (error) {
-                    showError('Ошибка привязки Google: ' + error.message);
+                    openNotice('Ошибка', 'Не удалось привязать Google аккаунт.');
                 }
             });
         }
@@ -552,6 +599,7 @@
             saveRulesBtn.addEventListener('click', async () => {
                 const text = adminRules.value.trim();
                 await set(rulesRef, text);
+                await openNotice('Правила обновлены', 'Новые правила сохранены и видны пользователям.');
             });
         }
 
@@ -739,12 +787,9 @@
                 btn.addEventListener('click', async () => {
                     const ticketId = btn.dataset.id;
                     const userId = btn.dataset.uid;
-                    const first = confirm('Удалить тикет навсегда?');
-                    if (!first) return;
-                    const second = confirm('Точно удалить тикет навсегда?');
-                    if (!second) return;
                     await remove(ref(db, `tickets/${userId}/${ticketId}`));
                     await remove(ref(db, `ticketChats/${ticketId}`));
+                    await openNotice('Тикет удалён', 'Заявка удалена без возможности восстановления.');
                 });
             });
         };
@@ -902,11 +947,11 @@
             if (!file) return;
             const allowedTypes = ['image/jpeg', 'image/png', 'image/webp', 'image/gif'];
             if (!allowedTypes.includes(file.type)) {
-                alert('Разрешены только изображения: JPG, PNG, WEBP, GIF.');
+                openNotice('Неверный файл', 'Разрешены только изображения: JPG, PNG, WEBP, GIF.');
                 return;
             }
             if (file.size > 1024 * 1024) {
-                alert('Файл слишком большой. Максимум 1 МБ.');
+                openNotice('Файл слишком большой', 'Максимальный размер — 1 МБ.');
                 return;
             }
             pendingFile = file;
@@ -966,6 +1011,7 @@
             ticketForm.reset();
             cooldown = true;
             ticketSubmit.textContent = 'Подождите 10 секунд...';
+            await openNotice('Тикет отправлен', 'Заявка создана и отправлена модераторам.');
             setTimeout(() => {
                 cooldown = false;
                 ticketSubmit.textContent = 'Отправить тикет';

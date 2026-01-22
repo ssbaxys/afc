@@ -265,6 +265,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const signatures = new Map();
         const overlay = document.getElementById('update-overlay');
         let isReloading = false;
+        let isInitialized = false;
 
         const fetchSignature = async (url) => {
             const cacheBustUrl = `${url}?v=${Date.now()}`;
@@ -277,10 +278,14 @@ document.addEventListener('DOMContentLoaded', () => {
                 // Fallback to GET below
             }
 
-            const getResponse = await fetch(cacheBustUrl, { method: 'GET', cache: 'no-store' });
-            if (!getResponse.ok) return '';
-            const text = await getResponse.text();
-            return `${getResponse.headers.get('etag') || ''}-${getResponse.headers.get('last-modified') || ''}-${text.length}`;
+            try {
+                const getResponse = await fetch(cacheBustUrl, { method: 'GET', cache: 'no-store' });
+                if (!getResponse.ok) return '';
+                const text = await getResponse.text();
+                return `${getResponse.headers.get('etag') || ''}-${getResponse.headers.get('last-modified') || ''}-${text.length}`;
+            } catch (error) {
+                return '';
+            }
         };
 
         const showOverlay = () => {
@@ -298,11 +303,16 @@ document.addEventListener('DOMContentLoaded', () => {
                     if (!signature) return;
                     const url = fileUrls[index];
                     const previous = signatures.get(url);
-                    if (previous && previous !== signature) {
+                    if (isInitialized && previous && previous !== signature) {
                         changed = true;
                     }
                     signatures.set(url, signature);
                 });
+
+                if (!isInitialized) {
+                    isInitialized = true;
+                    return;
+                }
 
                 if (changed) {
                     isReloading = true;
