@@ -237,6 +237,11 @@
         </div>
     </div>
 
+    <div id="ticket-lightbox">
+        <span id="ticket-lightbox-close">&times;</span>
+        <img id="ticket-lightbox-img" src="" alt="Увеличенное изображение">
+    </div>
+
     <div id="user-tickets-modal" class="fixed inset-0 z-[1200] hidden items-center justify-center bg-black/80 backdrop-blur-sm">
         <div class="modal-panel">
             <div class="modal-header">
@@ -304,6 +309,13 @@
         </div>
     </footer>
 
+    <div id="update-overlay" class="update-overlay">
+        <div class="flex flex-col items-center">
+            <div class="update-spinner"></div>
+            <div class="update-text">Обновление</div>
+        </div>
+    </div>
+
     <script src="app.js"></script>
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
@@ -369,6 +381,9 @@
         const chatFileName = document.getElementById('chat-file-name');
         const chatSend = document.getElementById('chat-send');
         const dropOverlay = document.getElementById('drop-overlay');
+        const ticketLightbox = document.getElementById('ticket-lightbox');
+        const ticketLightboxImg = document.getElementById('ticket-lightbox-img');
+        const ticketLightboxClose = document.getElementById('ticket-lightbox-close');
 
         const ticketForm = document.getElementById('ticket-form');
         const ticketSubmit = document.getElementById('ticket-submit');
@@ -782,11 +797,18 @@
                         <div class="chat-bubble">
                             <div class="text-xs text-gray-500 mb-2">${adminBadge}${msg.author} • ${time}</div>
                             <div class="text-gray-300 text-sm">${msg.text || ''}</div>
-                            ${msg.image ? `<img src="${msg.image}" alt="photo" class="mt-2 max-h-48 border border-[#3f4d36]">` : ''}
+                            ${msg.image ? `<img src="${msg.image}" alt="photo" class="mt-2 max-h-48 border border-[#3f4d36] cursor-pointer ticket-chat-image">` : ''}
                         </div>
                     `;
                 }).join('');
                 chatMessages.scrollTop = chatMessages.scrollHeight;
+
+                document.querySelectorAll('.ticket-chat-image').forEach(img => {
+                    img.addEventListener('click', () => {
+                        ticketLightboxImg.src = img.src;
+                        ticketLightbox.classList.add('active');
+                    });
+                });
             });
         };
 
@@ -812,6 +834,20 @@
                 closeChatModal();
             }
         });
+
+        if (ticketLightboxClose) {
+            ticketLightboxClose.addEventListener('click', () => {
+                ticketLightbox.classList.remove('active');
+            });
+        }
+
+        if (ticketLightbox) {
+            ticketLightbox.addEventListener('click', (event) => {
+                if (event.target === ticketLightbox) {
+                    ticketLightbox.classList.remove('active');
+                }
+            });
+        }
 
         document.querySelectorAll('.modal-close').forEach(btn => {
             btn.addEventListener('click', () => {
@@ -842,6 +878,11 @@
 
         const handleFileSelect = (file) => {
             if (!file) return;
+            const allowedTypes = ['image/jpeg', 'image/png', 'image/webp', 'image/gif'];
+            if (!allowedTypes.includes(file.type)) {
+                alert('Разрешены только изображения: JPG, PNG, WEBP, GIF.');
+                return;
+            }
             if (file.size > 1024 * 1024) {
                 alert('Файл слишком большой. Максимум 1 МБ.');
                 return;

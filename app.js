@@ -247,7 +247,71 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     // ---------------------------------------------------------
+    // AUTO-RELOAD ON STATIC FILE CHANGE
+    // ---------------------------------------------------------
+    const startChangeMonitor = () => {
+        const baseUrl = window.location.origin;
+        const fileUrls = [
+            `${baseUrl}/index.html`,
+            `${baseUrl}/info.html`,
+            `${baseUrl}/media.html`,
+            `${baseUrl}/work.html`,
+            `${baseUrl}/join.html`,
+            `${baseUrl}/veli.html`,
+            `${baseUrl}/shop.html`,
+            `${baseUrl}/styles.css`,
+            `${baseUrl}/app.js`
+        ];
+        const signatures = new Map();
+        const overlay = document.getElementById('update-overlay');
+        let isReloading = false;
+
+        const fetchSignature = async (url) => {
+            const response = await fetch(url, { method: 'HEAD', cache: 'no-store' });
+            if (!response.ok) return '';
+            return `${response.headers.get('etag') || ''}-${response.headers.get('last-modified') || ''}`;
+        };
+
+        const showOverlay = () => {
+            if (!overlay) return;
+            overlay.classList.add('active');
+        };
+
+        const checkForUpdates = async () => {
+            if (isReloading) return;
+            try {
+                const results = await Promise.all(fileUrls.map(fetchSignature));
+                let changed = false;
+
+                results.forEach((signature, index) => {
+                    if (!signature) return;
+                    const url = fileUrls[index];
+                    const previous = signatures.get(url);
+                    if (previous && previous !== signature) {
+                        changed = true;
+                    }
+                    signatures.set(url, signature);
+                });
+
+                if (changed) {
+                    isReloading = true;
+                    showOverlay();
+                    setTimeout(() => {
+                        window.location.reload();
+                    }, 600);
+                }
+            } catch (error) {
+                // Silently ignore to avoid console spam on restrictive hosts
+            }
+        };
+
+        checkForUpdates();
+        setInterval(checkForUpdates, 15000);
+    };
+
+    // ---------------------------------------------------------
     // INITIALIZE
     // ---------------------------------------------------------
     renderGallery();
+    startChangeMonitor();
 });
