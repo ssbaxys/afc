@@ -171,14 +171,20 @@
                     </div>
 
                     <div class="tactical-border p-6 bg-[#121410] panel-glow">
-                        <h3 class="text-2xl text-white font-teko mb-4">МОИ ТИКЕТЫ</h3>
+                        <div class="flex items-center justify-between mb-4">
+                            <h3 class="text-2xl text-white font-teko">МОИ ТИКЕТЫ</h3>
+                            <button id="open-user-tickets" class="text-xs uppercase tracking-widest text-[#658451] hover:text-white transition-colors">Смотреть все</button>
+                        </div>
                         <div id="user-tickets" class="space-y-4 text-gray-400 text-sm">
                             <p>Пока нет активных заявок.</p>
                         </div>
                     </div>
 
                     <div class="tactical-border p-6 bg-[#121410] hidden panel-glow" id="admin-panel">
-                        <h3 class="text-2xl text-white font-teko mb-4">ПАНЕЛЬ АДМИНА</h3>
+                        <div class="flex items-center justify-between mb-4">
+                            <h3 class="text-2xl text-white font-teko">ПАНЕЛЬ АДМИНА</h3>
+                            <button id="open-admin-tickets" class="text-xs uppercase tracking-widest text-red-300 hover:text-white transition-colors">Открыть список</button>
+                        </div>
                         <p class="text-gray-500 text-sm mb-4">Доступна только администраторам. Управляйте статусом тикетов и отвечайте в чате.</p>
                         <div class="flex flex-wrap gap-3 text-xs text-gray-500 uppercase tracking-widest mb-4">
                             <span class="px-3 py-1 border border-[#3f4d36]">Live Sync</span>
@@ -211,11 +217,73 @@
             <div class="p-5 border-t border-[#1a1d18] space-y-3">
                 <textarea id="chat-input" rows="3" class="w-full bg-[#0a0b09] border border-[#3f4d36] text-white px-4 py-3 focus:outline-none focus:border-[#658451]" placeholder="Сообщение..."></textarea>
                 <div class="flex flex-col sm:flex-row gap-3 items-start sm:items-center">
-                    <input type="file" id="chat-file" accept="image/*" class="text-sm text-gray-400">
+                    <label class="attach-btn">
+                        <input type="file" id="chat-file" accept="image/*" class="hidden">
+                        <i class="fas fa-paperclip"></i>
+                        Прикрепить фото
+                    </label>
+                    <span id="chat-file-name" class="text-xs text-gray-500">Файл не выбран</span>
                     <button id="chat-send" class="ml-auto bg-[#3f4d36] hover:bg-[#2d3826] text-white px-5 py-2 font-teko uppercase tracking-wider transition-all">Отправить</button>
                 </div>
-                <p class="text-xs text-gray-500">Фото прикрепляются как изображение в чате (до 1 МБ).</p>
+                <p class="text-xs text-gray-500">Перетащите изображение в центр экрана, чтобы прикрепить файл (до 1 МБ).</p>
             </div>
+        </div>
+    </div>
+
+    <div id="drop-overlay" class="drop-overlay">
+        <div class="drop-box">
+            <i class="fas fa-upload"></i>
+            <p>Перетащите изображение сюда</p>
+        </div>
+    </div>
+
+    <div id="user-tickets-modal" class="fixed inset-0 z-[1200] hidden items-center justify-center bg-black/80 backdrop-blur-sm">
+        <div class="modal-panel">
+            <div class="modal-header">
+                <div>
+                    <h3 class="text-3xl text-white font-teko">МОИ ТИКЕТЫ</h3>
+                    <p class="text-xs text-gray-500 uppercase tracking-widest">поиск, фильтры, история</p>
+                </div>
+                <button class="modal-close" data-close="user-tickets-modal"><i class="fas fa-times"></i></button>
+            </div>
+            <div class="modal-filters">
+                <input type="text" id="user-search" placeholder="Поиск по ключевым словам" class="modal-input">
+                <select id="user-status-filter" class="modal-select">
+                    <option value="">Все статусы</option>
+                    <option value="Новый">Новый</option>
+                    <option value="В работе">В работе</option>
+                    <option value="Выполнен">Выполнен</option>
+                    <option value="Отклонен">Отклонен</option>
+                    <option value="Архив">Архив</option>
+                </select>
+                <input type="date" id="user-date-filter" class="modal-input">
+            </div>
+            <div class="modal-body" id="user-ticket-list"></div>
+        </div>
+    </div>
+
+    <div id="admin-tickets-modal" class="fixed inset-0 z-[1200] hidden items-center justify-center bg-black/80 backdrop-blur-sm">
+        <div class="modal-panel">
+            <div class="modal-header">
+                <div>
+                    <h3 class="text-3xl text-white font-teko">ТИКЕТЫ (АДМИН)</h3>
+                    <p class="text-xs text-gray-500 uppercase tracking-widest">управление всеми заявками</p>
+                </div>
+                <button class="modal-close" data-close="admin-tickets-modal"><i class="fas fa-times"></i></button>
+            </div>
+            <div class="modal-filters">
+                <input type="text" id="admin-search" placeholder="Поиск по ключевым словам" class="modal-input">
+                <select id="admin-status-filter" class="modal-select">
+                    <option value="">Все статусы</option>
+                    <option value="Новый">Новый</option>
+                    <option value="В работе">В работе</option>
+                    <option value="Выполнен">Выполнен</option>
+                    <option value="Отклонен">Отклонен</option>
+                    <option value="Архив">Архив</option>
+                </select>
+                <input type="date" id="admin-date-filter" class="modal-input">
+            </div>
+            <div class="modal-body" id="admin-ticket-list"></div>
         </div>
     </div>
 
@@ -239,8 +307,8 @@
     <script src="app.js"></script>
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-        import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged, signOut, GoogleAuthProvider, signInWithPopup } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
-        import { getDatabase, ref, push, set, get, onValue, update } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
+        import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged, signOut, GoogleAuthProvider, signInWithPopup, linkWithPopup } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+        import { getDatabase, ref, push, set, get, onValue, update, remove } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
 
         const firebaseConfig = {
           apiKey: "AIzaSyBRBCKD_86JsJ_x9TRubfSbN4mbj_VIcxI",
@@ -266,12 +334,6 @@
         const authErrorEl = document.getElementById('auth-error');
         const logoutBtn = document.getElementById('logout-btn');
         const googleLoginBtn = document.getElementById('google-login');
-
-        const googleProvider = new GoogleAuthProvider();
-        googleProvider.setCustomParameters({
-            prompt: 'select_account'
-        });
-
         const linkGoogleBtn = document.getElementById('link-google');
 
         const userNickEl = document.getElementById('user-nick');
@@ -285,20 +347,43 @@
         const adminRules = document.getElementById('admin-rules');
         const saveRulesBtn = document.getElementById('save-rules');
 
+        const openUserTicketsBtn = document.getElementById('open-user-tickets');
+        const openAdminTicketsBtn = document.getElementById('open-admin-tickets');
+        const userTicketsModal = document.getElementById('user-tickets-modal');
+        const adminTicketsModal = document.getElementById('admin-tickets-modal');
+        const userTicketList = document.getElementById('user-ticket-list');
+        const adminTicketList = document.getElementById('admin-ticket-list');
+        const userSearch = document.getElementById('user-search');
+        const userStatusFilter = document.getElementById('user-status-filter');
+        const userDateFilter = document.getElementById('user-date-filter');
+        const adminSearch = document.getElementById('admin-search');
+        const adminStatusFilter = document.getElementById('admin-status-filter');
+        const adminDateFilter = document.getElementById('admin-date-filter');
+
         const chatModal = document.getElementById('chat-modal');
         const chatModalClose = document.getElementById('chat-modal-close');
         const chatTicketTitle = document.getElementById('chat-ticket-title');
         const chatMessages = document.getElementById('chat-messages');
         const chatInput = document.getElementById('chat-input');
         const chatFile = document.getElementById('chat-file');
+        const chatFileName = document.getElementById('chat-file-name');
         const chatSend = document.getElementById('chat-send');
+        const dropOverlay = document.getElementById('drop-overlay');
 
         const ticketForm = document.getElementById('ticket-form');
         const ticketSubmit = document.getElementById('ticket-submit');
 
+        const googleProvider = new GoogleAuthProvider();
+        googleProvider.setCustomParameters({ prompt: 'select_account' });
+
         let activeTicketId = null;
-        let activeTicketOwner = null;
         let cooldown = false;
+        let pendingFile = null;
+        let currentNick = 'Пользователь';
+        let currentIsAdmin = false;
+        let userTicketsCache = [];
+        let allTicketsCache = [];
+        let chatIndex = {};
 
         const showError = (message) => {
             authErrorEl.textContent = message;
@@ -327,6 +412,21 @@
 
         const setRulesContent = (text) => {
             ticketRules.innerHTML = renderMarkdown(text || '—');
+        };
+
+        const openModal = (modal) => {
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+        };
+
+        const closeModal = (modal) => {
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
+        };
+
+        const updateStatus = () => {
+            userStatusEl.innerHTML = `<span class="pulse-dot"></span>${currentIsAdmin ? 'Админ онлайн' : 'В сети'}`;
+            userStatusEl.className = currentIsAdmin ? 'text-red-300 flex items-center gap-2' : 'text-emerald-300 flex items-center gap-2';
         };
 
         tabLogin.addEventListener('click', () => {
@@ -375,7 +475,8 @@
                     nick,
                     admin: false,
                     provider: 'local',
-                    createdAt: new Date().toISOString()
+                    createdAt: new Date().toISOString(),
+                    googleLinked: false
                 });
             } catch (error) {
                 showError('Ошибка регистрации: ' + error.message);
@@ -409,9 +510,9 @@
             linkGoogleBtn.addEventListener('click', async () => {
                 hideError();
                 try {
-                    const result = await signInWithPopup(auth, googleProvider);
                     const user = auth.currentUser;
                     if (!user) return;
+                    await linkWithPopup(user, googleProvider);
                     await update(ref(db, `users/${user.uid}`), {
                         googleLinked: true
                     });
@@ -441,31 +542,42 @@
 
         logoutBtn.addEventListener('click', () => signOut(auth));
 
-        const renderTickets = (tickets, container, options = {}) => {
+        const statusStyles = {
+            'Новый': 'text-blue-300 border-blue-500/60 bg-blue-500/10',
+            'В работе': 'text-yellow-300 border-yellow-500/60 bg-yellow-500/10',
+            'Выполнен': 'text-emerald-300 border-emerald-500/60 bg-emerald-500/10',
+            'Отклонен': 'text-red-300 border-red-500/60 bg-red-500/10',
+            'Архив': 'text-gray-400 border-gray-600/60 bg-gray-600/10'
+        };
+
+        const renderTicketCards = (tickets, container, options = {}) => {
             if (!tickets.length) {
                 container.innerHTML = '<p>Нет тикетов.</p>';
                 return;
             }
 
-            const statusStyles = {
-                'Новый': 'text-blue-300 border-blue-500/60 bg-blue-500/10',
-                'В работе': 'text-yellow-300 border-yellow-500/60 bg-yellow-500/10',
-                'Выполнен': 'text-emerald-300 border-emerald-500/60 bg-emerald-500/10',
-                'Отклонен': 'text-red-300 border-red-500/60 bg-red-500/10'
-            };
-
             container.innerHTML = tickets.map(ticket => {
-                const status = ticket.status || 'Новый';
+                const status = ticket.archived ? 'Архив' : (ticket.status || 'Новый');
+                const statusClass = statusStyles[status] || 'text-gray-300 border-gray-600/60 bg-gray-600/10';
+
                 const adminControls = options.admin ? `
                     <div class="mt-3 grid grid-cols-1 sm:grid-cols-[auto_1fr] gap-2 items-center">
                         <span class="text-xs uppercase tracking-widest text-gray-500">Статус</span>
                         <select class="admin-status bg-[#0a0b09] border border-[#3f4d36] text-white px-3 py-2 text-sm" data-id="${ticket.id}" data-uid="${ticket.uid}">
-                            <option value="Новый" ${status === 'Новый' ? 'selected' : ''}>Новый</option>
-                            <option value="В работе" ${status === 'В работе' ? 'selected' : ''}>В работе</option>
-                            <option value="Выполнен" ${status === 'Выполнен' ? 'selected' : ''}>Выполнен</option>
-                            <option value="Отклонен" ${status === 'Отклонен' ? 'selected' : ''}>Отклонен</option>
+                            <option value="Новый" ${ticket.status === 'Новый' ? 'selected' : ''}>Новый</option>
+                            <option value="В работе" ${ticket.status === 'В работе' ? 'selected' : ''}>В работе</option>
+                            <option value="Выполнен" ${ticket.status === 'Выполнен' ? 'selected' : ''}>Выполнен</option>
+                            <option value="Отклонен" ${ticket.status === 'Отклонен' ? 'selected' : ''}>Отклонен</option>
                         </select>
                     </div>
+                    <div class="mt-3 flex flex-wrap gap-2 text-xs">
+                        <button class="admin-archive px-3 py-1 border border-[#3f4d36] text-gray-300 hover:text-white" data-id="${ticket.id}" data-uid="${ticket.uid}">Архивировать</button>
+                        <button class="admin-delete px-3 py-1 border border-red-500/50 text-red-300 hover:text-white" data-id="${ticket.id}" data-uid="${ticket.uid}">Удалить навсегда</button>
+                    </div>
+                ` : '';
+
+                const userArchive = options.user ? `
+                    <button class="ticket-archive text-xs uppercase tracking-widest text-gray-500 hover:text-white" data-id="${ticket.id}">Скрыть</button>
                 ` : '';
 
                 return `
@@ -473,20 +585,169 @@
                         <div class="flex flex-wrap items-center justify-between gap-2 mb-2">
                             <h4 class="ticket-title">${ticket.subject}</h4>
                             <div class="flex items-center gap-2 text-xs">
-                                <span class="ticket-status ${statusStyles[status] || 'text-gray-300 border-gray-600/60 bg-gray-600/10'}">${status}</span>
+                                <span class="ticket-status ${statusClass}">${status}</span>
                             </div>
                         </div>
                         <p class="text-gray-500 text-sm mb-2">${ticket.description}</p>
                         <div class="flex flex-wrap gap-3 text-xs text-gray-600">
                             <span>Автор: ${ticket.nick}</span>
                             <button class="ml-auto text-[#658451] text-xs uppercase tracking-widest open-chat" data-id="${ticket.id}" data-title="${ticket.subject}" data-owner="${ticket.uid}">
-                                Открыть чат
+                                Открыть тикет
                             </button>
+                            ${userArchive}
                         </div>
                         ${adminControls}
                     </div>
                 `;
             }).join('');
+        };
+
+        const filterTickets = (tickets, filters = {}) => {
+            const search = (filters.search || '').toLowerCase().trim();
+            const status = filters.status || '';
+            const date = filters.date || '';
+
+            return tickets.filter(ticket => {
+                const ticketStatus = ticket.archived ? 'Архив' : (ticket.status || 'Новый');
+                if (status && ticketStatus !== status) return false;
+                if (date) {
+                    const ticketDate = new Date(ticket.createdAt).toISOString().slice(0, 10);
+                    if (ticketDate !== date) return false;
+                }
+                if (search) {
+                    const messageText = chatIndex[ticket.id] || '';
+                    const combined = `${ticket.subject} ${ticket.description} ${ticket.nick} ${messageText}`.toLowerCase();
+                    if (!combined.includes(search)) return false;
+                }
+                return true;
+            });
+        };
+
+        const renderUserPreview = () => {
+            const visibleTickets = userTicketsCache.filter(ticket => !ticket.archivedByUser);
+            const preview = visibleTickets.slice(0, 3);
+            renderTicketCards(preview, userTicketsEl, { user: true });
+        };
+
+        const renderUserModal = () => {
+            const filtered = filterTickets(userTicketsCache.filter(ticket => !ticket.archivedByUser), {
+                search: userSearch.value,
+                status: userStatusFilter.value,
+                date: userDateFilter.value
+            });
+            renderTicketCards(filtered, userTicketList, { user: true });
+            attachTicketActions();
+        };
+
+        const renderAdminModal = () => {
+            const filtered = filterTickets(allTicketsCache, {
+                search: adminSearch.value,
+                status: adminStatusFilter.value,
+                date: adminDateFilter.value
+            });
+            renderTicketCards(filtered, adminTicketList, { admin: true });
+            attachTicketActions();
+        };
+
+        const attachTicketActions = () => {
+            document.querySelectorAll('.open-chat').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    openChatModal(btn.dataset.id, btn.dataset.title);
+                });
+            });
+
+            document.querySelectorAll('.ticket-archive').forEach(btn => {
+                btn.addEventListener('click', async () => {
+                    const ticketId = btn.dataset.id;
+                    const user = auth.currentUser;
+                    if (!user) return;
+                    const ticketRef = ref(db, `tickets/${user.uid}/${ticketId}`);
+                    await update(ticketRef, { archivedByUser: true });
+                });
+            });
+
+            document.querySelectorAll('.admin-status').forEach(select => {
+                select.addEventListener('change', async (event) => {
+                    const ticketId = event.target.dataset.id;
+                    const userId = event.target.dataset.uid;
+                    const newStatus = event.target.value;
+                    const ticketRef = ref(db, `tickets/${userId}/${ticketId}`);
+                    await update(ticketRef, { status: newStatus });
+                });
+            });
+
+            document.querySelectorAll('.admin-archive').forEach(btn => {
+                btn.addEventListener('click', async () => {
+                    const ticketId = btn.dataset.id;
+                    const userId = btn.dataset.uid;
+                    const ticketRef = ref(db, `tickets/${userId}/${ticketId}`);
+                    await update(ticketRef, { archived: true });
+                });
+            });
+
+            document.querySelectorAll('.admin-delete').forEach(btn => {
+                btn.addEventListener('click', async () => {
+                    const ticketId = btn.dataset.id;
+                    const userId = btn.dataset.uid;
+                    const confirmDelete = confirm('Удалить тикет навсегда?');
+                    if (!confirmDelete) return;
+                    await remove(ref(db, `tickets/${userId}/${ticketId}`));
+                    await remove(ref(db, `ticketChats/${ticketId}`));
+                });
+            });
+        };
+
+        const loadChatsIndex = () => {
+            const chatRef = ref(db, 'ticketChats');
+            onValue(chatRef, snapshot => {
+                const data = snapshot.val() || {};
+                const index = {};
+                Object.entries(data).forEach(([ticketId, messages]) => {
+                    const text = Object.values(messages || {}).map(msg => `${msg.author} ${msg.text || ''}`).join(' ').toLowerCase();
+                    index[ticketId] = text;
+                });
+                chatIndex = index;
+                renderUserModal();
+                renderAdminModal();
+            });
+        };
+
+        const loadTickets = (uid, isAdmin) => {
+            const userTicketsRef = ref(db, `tickets/${uid}`);
+            onValue(userTicketsRef, snapshot => {
+                const data = snapshot.val() || {};
+                userTicketsCache = Object.entries(data).map(([id, ticket]) => ({ id, uid, ...ticket }));
+                renderUserPreview();
+                updateStats(userTicketsCache);
+                attachTicketActions();
+                renderUserModal();
+            });
+
+            if (isAdmin) {
+                const allTicketsRef = ref(db, 'tickets');
+                onValue(allTicketsRef, snapshot => {
+                    const data = snapshot.val() || {};
+                    const allTickets = [];
+                    Object.entries(data).forEach(([userId, userTickets]) => {
+                        Object.entries(userTickets || {}).forEach(([id, ticket]) => {
+                            allTickets.push({ id, uid: userId, ...ticket });
+                        });
+                    });
+                    allTicketsCache = allTickets;
+                    renderTicketCards(allTicketsCache.slice(0, 4), adminTickets, { admin: true });
+                    attachTicketActions();
+                    renderAdminModal();
+                });
+            }
+        };
+
+        const updateStats = (tickets = []) => {
+            const active = tickets.filter(ticket => ticket.status === 'Новый' && !ticket.archivedByUser).length;
+            const progress = tickets.filter(ticket => ticket.status === 'В работе' && !ticket.archivedByUser).length;
+            const done = tickets.filter(ticket => ticket.status === 'Выполнен' && !ticket.archivedByUser).length;
+            document.getElementById('stat-active').textContent = active;
+            document.getElementById('stat-progress').textContent = progress;
+            document.getElementById('stat-done').textContent = done;
         };
 
         const loadChats = (ticketId) => {
@@ -526,14 +787,8 @@
             chatModal.classList.add('hidden');
             chatModal.classList.remove('flex');
             activeTicketId = null;
-        };
-
-        const attachChatHandlers = () => {
-            document.querySelectorAll('.open-chat').forEach(btn => {
-                btn.addEventListener('click', () => {
-                    openChatModal(btn.dataset.id, btn.dataset.title);
-                });
-            });
+            pendingFile = null;
+            chatFileName.textContent = 'Файл не выбран';
         };
 
         chatModalClose.addEventListener('click', closeChatModal);
@@ -543,50 +798,136 @@
             }
         });
 
-        const updateStats = (tickets = []) => {
-            const active = tickets.filter(ticket => ticket.status === 'Новый').length;
-            const progress = tickets.filter(ticket => ticket.status === 'В работе').length;
-            const done = tickets.filter(ticket => ticket.status === 'Выполнен').length;
-            document.getElementById('stat-active').textContent = active;
-            document.getElementById('stat-progress').textContent = progress;
-            document.getElementById('stat-done').textContent = done;
+        document.querySelectorAll('.modal-close').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const modalId = btn.dataset.close;
+                closeModal(document.getElementById(modalId));
+            });
+        });
+
+        openUserTicketsBtn.addEventListener('click', () => {
+            openModal(userTicketsModal);
+            renderUserModal();
+        });
+
+        openAdminTicketsBtn.addEventListener('click', () => {
+            openModal(adminTicketsModal);
+            renderAdminModal();
+        });
+
+        [userSearch, userStatusFilter, userDateFilter].forEach(input => {
+            input.addEventListener('input', renderUserModal);
+            input.addEventListener('change', renderUserModal);
+        });
+
+        [adminSearch, adminStatusFilter, adminDateFilter].forEach(input => {
+            input.addEventListener('input', renderAdminModal);
+            input.addEventListener('change', renderAdminModal);
+        });
+
+        const handleFileSelect = (file) => {
+            if (!file) return;
+            if (file.size > 1024 * 1024) {
+                alert('Файл слишком большой. Максимум 1 МБ.');
+                return;
+            }
+            pendingFile = file;
+            chatFileName.textContent = file.name;
         };
 
-        const loadTickets = (uid, isAdmin) => {
-            const userTicketsRef = ref(db, `tickets/${uid}`);
-            onValue(userTicketsRef, snapshot => {
-                const data = snapshot.val() || {};
-                const tickets = Object.entries(data).map(([id, ticket]) => ({ id, uid, ...ticket }));
-                renderTickets(tickets, userTicketsEl);
-                updateStats(tickets);
-                attachChatHandlers();
+        chatFile.addEventListener('change', (event) => {
+            const file = event.target.files[0];
+            handleFileSelect(file);
+        });
+
+        document.addEventListener('dragover', (event) => {
+            if (!chatModal.classList.contains('flex')) return;
+            event.preventDefault();
+            dropOverlay.classList.add('active');
+        });
+
+        document.addEventListener('dragleave', (event) => {
+            if (event.relatedTarget === null) {
+                dropOverlay.classList.remove('active');
+            }
+        });
+
+        document.addEventListener('drop', (event) => {
+            if (!chatModal.classList.contains('flex')) return;
+            event.preventDefault();
+            dropOverlay.classList.remove('active');
+            const file = event.dataTransfer.files[0];
+            handleFileSelect(file);
+        });
+
+        ticketForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            if (cooldown) return;
+            const user = auth.currentUser;
+            if (!user) return;
+
+            const subject = document.getElementById('ticket-subject').value.trim();
+            const description = document.getElementById('ticket-description').value.trim();
+            if (!subject || !description) return;
+
+            const userRef = ref(db, `users/${user.uid}`);
+            const userSnapshot = await get(userRef);
+            const userData = userSnapshot.val() || { nick: currentNick };
+
+            const ticketRef = push(ref(db, `tickets/${user.uid}`));
+            await set(ticketRef, {
+                subject,
+                description,
+                nick: userData.nick || currentNick,
+                status: 'Новый',
+                createdAt: new Date().toISOString(),
+                archived: false,
+                archivedByUser: false
             });
 
-            if (isAdmin) {
-                const allTicketsRef = ref(db, 'tickets');
-                onValue(allTicketsRef, snapshot => {
-                    const data = snapshot.val() || {};
-                    const allTickets = [];
-                    Object.entries(data).forEach(([userId, userTickets]) => {
-                        Object.entries(userTickets || {}).forEach(([id, ticket]) => {
-                            allTickets.push({ id, uid: userId, ...ticket });
-                        });
-                    });
-                    renderTickets(allTickets, adminTickets, { admin: true });
-                    attachChatHandlers();
+            ticketForm.reset();
+            cooldown = true;
+            ticketSubmit.textContent = 'Подождите 10 секунд...';
+            setTimeout(() => {
+                cooldown = false;
+                ticketSubmit.textContent = 'Отправить тикет';
+            }, 10000);
+        });
 
-                    adminTickets.querySelectorAll('.admin-status').forEach(select => {
-                        select.addEventListener('change', async (event) => {
-                            const ticketId = event.target.dataset.id;
-                            const userId = event.target.dataset.uid;
-                            const newStatus = event.target.value;
-                            const ticketRef = ref(db, `tickets/${userId}/${ticketId}`);
-                            await update(ticketRef, { status: newStatus });
-                        });
-                    });
+        chatSend.addEventListener('click', async () => {
+            const user = auth.currentUser;
+            if (!user || !activeTicketId) return;
+            const text = chatInput.value.trim();
+
+            if (!text && !pendingFile) return;
+
+            let imageData = '';
+            if (pendingFile) {
+                imageData = await new Promise((resolve) => {
+                    const reader = new FileReader();
+                    reader.onload = () => resolve(reader.result);
+                    reader.readAsDataURL(pendingFile);
                 });
             }
-        };
+
+            const userRef = ref(db, `users/${user.uid}`);
+            const userSnapshot = await get(userRef);
+            const userData = userSnapshot.val() || { nick: currentNick, admin: false };
+
+            const messageRef = push(ref(db, `ticketChats/${activeTicketId}`));
+            await set(messageRef, {
+                author: userData.nick || currentNick,
+                text,
+                image: imageData,
+                isAdmin: userData.admin === true,
+                createdAt: new Date().toISOString()
+            });
+
+            chatInput.value = '';
+            chatFile.value = '';
+            pendingFile = null;
+            chatFileName.textContent = 'Файл не выбран';
+        });
 
         onAuthStateChanged(auth, async user => {
             if (!user) {
@@ -600,14 +941,28 @@
 
             const userRef = ref(db, `users/${user.uid}`);
             const snapshot = await get(userRef);
-            const userData = snapshot.val() || { admin: false, nick: 'Пользователь', provider: 'local' };
-
+            const userData = snapshot.val() || { admin: false, nick: null, provider: 'local' };
             const defaultNick = user.displayName || user.email?.split('@')[0] || 'Пользователь';
             const finalNick = userData.nick || defaultNick;
+
+            if (!snapshot.exists()) {
+                await set(userRef, {
+                    nick: finalNick,
+                    admin: false,
+                    provider: user.displayName ? 'google' : 'local',
+                    createdAt: new Date().toISOString(),
+                    googleLinked: user.displayName ? true : false
+                });
+            } else if (!userData.nick && finalNick) {
+                await update(userRef, { nick: finalNick });
+            }
+
+            currentNick = finalNick;
+            currentIsAdmin = userData.admin === true;
+
             userNickEl.textContent = finalNick;
             userRoleEl.textContent = userData.admin ? 'Администратор' : 'Пользователь';
-            userStatusEl.innerHTML = `<span class="pulse-dot"></span>${userData.admin ? 'Админ онлайн' : 'В сети'}`;
-            userStatusEl.className = userData.admin ? 'text-red-300 flex items-center gap-2' : 'text-emerald-300 flex items-center gap-2';
+            updateStatus();
 
             if (userData.admin) {
                 adminToggle.classList.remove('hidden');
@@ -624,17 +979,6 @@
                 adminPanel.classList.add('hidden');
             }
 
-            if (!snapshot.exists()) {
-                await set(userRef, {
-                    nick: finalNick,
-                    admin: false,
-                    provider: user.displayName ? 'google' : 'local',
-                    createdAt: new Date().toISOString()
-                });
-            } else if (!userData.nick && finalNick) {
-                await update(userRef, { nick: finalNick });
-            }
-
             if (userData.provider === 'local') {
                 linkGoogleBtn.classList.remove('hidden');
                 if (userData.googleLinked) {
@@ -649,76 +993,7 @@
             }
 
             loadTickets(user.uid, userData.admin);
-        });
-
-        ticketForm.addEventListener('submit', async (e) => {
-            e.preventDefault();
-            if (cooldown) return;
-            const user = auth.currentUser;
-            if (!user) return;
-
-            const subject = document.getElementById('ticket-subject').value.trim();
-            const description = document.getElementById('ticket-description').value.trim();
-            if (!subject || !description) return;
-
-            const userRef = ref(db, `users/${user.uid}`);
-            const userSnapshot = await get(userRef);
-            const userData = userSnapshot.val() || { nick: user.displayName || user.email?.split('@')[0] || 'Пользователь' };
-
-            const ticketRef = push(ref(db, `tickets/${user.uid}`));
-            await set(ticketRef, {
-                subject,
-                description,
-                nick: userData.nick || user.displayName || 'Пользователь',
-                status: 'Новый',
-                createdAt: new Date().toISOString()
-            });
-
-            ticketForm.reset();
-            cooldown = true;
-            ticketSubmit.textContent = 'Подождите 10 секунд...';
-            setTimeout(() => {
-                cooldown = false;
-                ticketSubmit.textContent = 'Отправить тикет';
-            }, 10000);
-        });
-
-        chatSend.addEventListener('click', async () => {
-            const user = auth.currentUser;
-            if (!user || !activeTicketId) return;
-            const text = chatInput.value.trim();
-            const file = chatFile.files[0];
-            let imageData = '';
-
-            if (file) {
-                if (file.size > 1024 * 1024) {
-                    alert('Файл слишком большой. Максимум 1 МБ.');
-                    return;
-                }
-                imageData = await new Promise((resolve) => {
-                    const reader = new FileReader();
-                    reader.onload = () => resolve(reader.result);
-                    reader.readAsDataURL(file);
-                });
-            }
-
-            if (!text && !imageData) return;
-
-            const userRef = ref(db, `users/${user.uid}`);
-            const userSnapshot = await get(userRef);
-            const userData = userSnapshot.val() || { nick: 'Боец', admin: false };
-
-            const messageRef = push(ref(db, `ticketChats/${activeTicketId}`));
-            await set(messageRef, {
-                author: userData.nick || 'Боец',
-                text,
-                image: imageData,
-                isAdmin: userData.admin === true,
-                createdAt: new Date().toISOString()
-            });
-
-            chatInput.value = '';
-            chatFile.value = '';
+            loadChatsIndex();
         });
     </script>
 </body>
