@@ -59,81 +59,115 @@
         <div class="absolute inset-0 page-header-overlay"></div>
         <div class="relative z-10 text-center px-4 py-20">
             <h1 class="text-5xl md:text-7xl font-bold text-white mb-4 font-teko">ЗАКАЗЫ <span class="text-[#658451]">AFC</span></h1>
-            <p class="text-xl text-gray-400">Подача заявок и управление тикетами</p>
+            <p class="text-xl text-gray-400">Система заявок и личный кабинет</p>
         </div>
     </section>
 
     <section class="py-24 bg-[#0a0b09] fade-in-section">
         <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="grid grid-cols-1 lg:grid-cols-[1.1fr_0.9fr] gap-10 order-layout">
+            <div class="tactical-border p-8 bg-[#121410] mb-12" id="auth-panel">
+                <div class="flex flex-col lg:flex-row gap-10 items-center">
+                    <div class="text-center lg:text-left flex-1">
+                        <h2 class="text-3xl text-white font-teko mb-3">ДОСТУП В СИСТЕМУ</h2>
+                        <p class="text-gray-500">Введите ник и пароль, чтобы создавать заявки и общаться с админами.</p>
+                        <p class="text-gray-500 text-sm mt-4">Логин создается по нику. Админы подтверждают заявки и ведут переписку.</p>
+                    </div>
+                    <div class="flex-1 w-full">
+                        <div class="flex gap-3 mb-4">
+                            <button id="tab-login" class="px-4 py-2 bg-[#3f4d36] text-white font-teko uppercase tracking-wider">Вход</button>
+                            <button id="tab-register" class="px-4 py-2 border border-[#3f4d36] text-gray-300 font-teko uppercase tracking-wider">Регистрация</button>
+                        </div>
+                        <form id="login-form" class="space-y-4">
+                            <input type="text" id="login-nick" placeholder="Ник" class="w-full bg-[#0a0b09] border border-[#3f4d36] text-white px-4 py-3 focus:outline-none focus:border-[#658451]" required>
+                            <input type="password" id="login-password" placeholder="Пароль" class="w-full bg-[#0a0b09] border border-[#3f4d36] text-white px-4 py-3 focus:outline-none focus:border-[#658451]" required>
+                            <button type="submit" class="w-full bg-[#658451] hover:bg-[#4d663d] text-white px-6 py-3 font-teko text-xl uppercase tracking-wider transition-all">Войти</button>
+                        </form>
+                        <form id="register-form" class="space-y-4 hidden">
+                            <input type="text" id="register-nick" placeholder="Ник" class="w-full bg-[#0a0b09] border border-[#3f4d36] text-white px-4 py-3 focus:outline-none focus:border-[#658451]" required>
+                            <input type="password" id="register-password" placeholder="Пароль" class="w-full bg-[#0a0b09] border border-[#3f4d36] text-white px-4 py-3 focus:outline-none focus:border-[#658451]" required>
+                            <button type="submit" class="w-full bg-[#3f4d36] hover:bg-[#2d3826] text-white px-6 py-3 font-teko text-xl uppercase tracking-wider transition-all">Создать аккаунт</button>
+                        </form>
+                        <p id="auth-error" class="mt-4 text-sm text-red-300 hidden"></p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-[1.1fr_0.9fr] gap-10 order-layout hidden" id="dashboard">
                 <div class="tactical-border p-8 bg-[#121410] order-panel">
                     <div class="flex items-center justify-between flex-wrap gap-4 mb-8">
-                        <h2 class="text-3xl text-white font-teko">СОЗДАТЬ ТИКЕТ</h2>
-                        <div id="auth-status" class="text-sm text-gray-400">Не авторизован</div>
+                        <div>
+                            <h2 class="text-3xl text-white font-teko">НОВЫЙ ТИКЕТ</h2>
+                            <p class="text-gray-500 text-sm" id="cooldown-hint">Можно создавать несколько тикетов. Между отправками — 10 секунд.</p>
+                        </div>
+                        <div class="text-sm text-gray-400" id="user-status">Оффлайн</div>
                     </div>
 
-                    <div class="space-y-6">
-                        <div class="bg-[#0f110e] p-6 tactical-border">
-                            <h3 class="text-xl text-[#658451] font-teko mb-2">Вход через Google</h3>
-                            <p class="text-gray-500 text-sm mb-4">Войдите, чтобы создать заказ и отслеживать его статус.</p>
-                            <button id="google-signin" class="inline-flex items-center gap-3 bg-[#3f4d36] hover:bg-[#2d3826] text-white px-6 py-3 font-teko text-xl uppercase tracking-wider transition-all border border-[#658451]">
-                                <i class="fab fa-google"></i>
-                                Войти через Google
-                            </button>
+                    <form id="ticket-form" class="space-y-5">
+                        <div>
+                            <label class="text-gray-400 text-sm uppercase tracking-widest">Заголовок</label>
+                            <input type="text" id="ticket-subject" class="w-full mt-2 bg-[#0a0b09] border border-[#3f4d36] text-white px-4 py-3 focus:outline-none focus:border-[#658451]" placeholder="Например: Снабжение передовой" required>
                         </div>
+                        <div>
+                            <label class="text-gray-400 text-sm uppercase tracking-widest">Описание</label>
+                            <textarea id="ticket-description" rows="5" class="w-full mt-2 bg-[#0a0b09] border border-[#3f4d36] text-white px-4 py-3 focus:outline-none focus:border-[#658451]" placeholder="Опишите задачу, сроки и требования" required></textarea>
+                        </div>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div>
+                                <label class="text-gray-400 text-sm uppercase tracking-widest">Приоритет</label>
+                                <select id="ticket-priority" class="w-full mt-2 bg-[#0a0b09] border border-[#3f4d36] text-white px-4 py-3 focus:outline-none focus:border-[#658451]">
+                                    <option value="Обычный">Обычный</option>
+                                    <option value="Высокий">Высокий</option>
+                                    <option value="Критический">Критический</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="text-gray-400 text-sm uppercase tracking-widest">Контакт</label>
+                                <input type="text" id="ticket-contact" class="w-full mt-2 bg-[#0a0b09] border border-[#3f4d36] text-white px-4 py-3 focus:outline-none focus:border-[#658451]" placeholder="Discord / Steam / Nick" required>
+                            </div>
+                        </div>
+                        <button type="submit" id="ticket-submit" class="w-full bg-[#658451] hover:bg-[#4d663d] text-white px-6 py-3 font-teko text-2xl uppercase tracking-wider transition-all border border-transparent hover:border-[#8da378] shadow-[0_0_15px_rgba(101,132,81,0.3)]">
+                            Отправить тикет
+                        </button>
+                    </form>
 
-                        <form id="ticket-form" class="space-y-5 hidden">
-                            <div>
-                                <label class="text-gray-400 text-sm uppercase tracking-widest">Тема заказа</label>
-                                <input type="text" id="ticket-subject" class="w-full mt-2 bg-[#0a0b09] border border-[#3f4d36] text-white px-4 py-3 focus:outline-none focus:border-[#658451]" placeholder="Например: Логистика в Foul Basin" required>
-                            </div>
-                            <div>
-                                <label class="text-gray-400 text-sm uppercase tracking-widest">Описание</label>
-                                <textarea id="ticket-description" rows="5" class="w-full mt-2 bg-[#0a0b09] border border-[#3f4d36] text-white px-4 py-3 focus:outline-none focus:border-[#658451]" placeholder="Опишите задачу, сроки и требования" required></textarea>
-                            </div>
-                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                                <div>
-                                    <label class="text-gray-400 text-sm uppercase tracking-widest">Приоритет</label>
-                                    <select id="ticket-priority" class="w-full mt-2 bg-[#0a0b09] border border-[#3f4d36] text-white px-4 py-3 focus:outline-none focus:border-[#658451]">
-                                        <option value="Обычный">Обычный</option>
-                                        <option value="Высокий">Высокий</option>
-                                        <option value="Критический">Критический</option>
-                                    </select>
+                    <div class="mt-10 tactical-border p-6 bg-[#0f110e]">
+                        <h3 class="text-2xl text-white font-teko mb-4">ЧАТ ПО ТИКЕТУ</h3>
+                        <p class="text-gray-500 text-sm mb-4">Выберите тикет справа, чтобы открыть переписку.</p>
+                        <div id="chat-wrapper" class="hidden">
+                            <div class="mb-4 text-sm text-gray-400">Тикет: <span id="chat-ticket-title" class="text-white"></span></div>
+                            <div id="chat-messages" class="space-y-3 max-h-[320px] overflow-y-auto pr-2"></div>
+                            <div class="mt-4 space-y-3">
+                                <textarea id="chat-input" rows="3" class="w-full bg-[#0a0b09] border border-[#3f4d36] text-white px-4 py-3 focus:outline-none focus:border-[#658451]" placeholder="Сообщение..."></textarea>
+                                <div class="flex flex-col sm:flex-row gap-3 items-start sm:items-center">
+                                    <input type="file" id="chat-file" accept="image/*" class="text-sm text-gray-400">
+                                    <button id="chat-send" class="ml-auto bg-[#3f4d36] hover:bg-[#2d3826] text-white px-5 py-2 font-teko uppercase tracking-wider transition-all">Отправить</button>
                                 </div>
-                                <div>
-                                    <label class="text-gray-400 text-sm uppercase tracking-widest">Канал связи</label>
-                                    <input type="text" id="ticket-contact" class="w-full mt-2 bg-[#0a0b09] border border-[#3f4d36] text-white px-4 py-3 focus:outline-none focus:border-[#658451]" placeholder="Discord / Steam / Nick" required>
-                                </div>
+                                <p class="text-xs text-gray-500">Фото прикрепляются как изображение в чате (до 1 МБ).</p>
                             </div>
-                            <button type="submit" class="w-full bg-[#658451] hover:bg-[#4d663d] text-white px-6 py-3 font-teko text-2xl uppercase tracking-wider transition-all border border-transparent hover:border-[#8da378] shadow-[0_0_15px_rgba(101,132,81,0.3)]">
-                                Отправить тикет
-                            </button>
-                        </form>
+                        </div>
                     </div>
                 </div>
 
                 <div class="space-y-6 order-sidebar">
                     <div class="tactical-border p-6 bg-[#121410]">
-                        <h3 class="text-2xl text-white font-teko mb-4">СТАТУС ПОЛЬЗОВАТЕЛЯ</h3>
+                        <h3 class="text-2xl text-white font-teko mb-4">ПРОФИЛЬ</h3>
                         <div class="space-y-3 text-gray-400 text-sm">
-                            <p><span class="text-[#658451]">Google ID:</span> <span id="user-id">—</span></p>
-                            <p><span class="text-[#658451]">Email:</span> <span id="user-email">—</span></p>
-                            <p><span class="text-[#658451]">Статус:</span> <span id="user-status">Оффлайн</span></p>
-                            <p><span class="text-[#658451]">Роль:</span> <span id="user-role">Пользователь</span></p>
-                            <p><span class="text-[#658451]">Admin:</span> <span id="user-admin">false</span></p>
+                            <p><span class="text-[#658451]">Ник:</span> <span id="user-nick">—</span></p>
+                            <p><span class="text-[#658451]">Роль:</span> <span id="user-role">Боец</span></p>
                         </div>
+                        <button id="logout-btn" class="mt-6 w-full bg-[#3f4d36] hover:bg-[#2d3826] text-white px-4 py-2 font-teko uppercase tracking-wider transition-all">Выйти</button>
                     </div>
 
                     <div class="tactical-border p-6 bg-[#121410]">
                         <h3 class="text-2xl text-white font-teko mb-4">МОИ ТИКЕТЫ</h3>
                         <div id="user-tickets" class="space-y-4 text-gray-400 text-sm">
-                            <p>Авторизуйтесь, чтобы видеть ваши заявки.</p>
+                            <p>Пока нет активных заявок.</p>
                         </div>
                     </div>
 
-                    <div class="tactical-border p-6 bg-[#121410]" id="admin-panel" style="display:none;">
+                    <div class="tactical-border p-6 bg-[#121410] hidden" id="admin-panel">
                         <h3 class="text-2xl text-white font-teko mb-4">ПАНЕЛЬ АДМИНА</h3>
-                        <p class="text-gray-500 text-sm mb-4">Доступна только администраторам. Здесь отображаются все тикеты.</p>
+                        <p class="text-gray-500 text-sm mb-4">Доступна только администраторам. Управляйте статусом тикетов и отвечайте в чате.</p>
                         <div class="flex flex-wrap gap-3 text-xs text-gray-500 uppercase tracking-widest mb-4">
                             <span class="px-3 py-1 border border-[#3f4d36]">Live Sync</span>
                             <span class="px-3 py-1 border border-[#3f4d36]">Realtime Database</span>
@@ -165,7 +199,7 @@
     <script src="app.js"></script>
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-        import { getAuth, GoogleAuthProvider, signInWithPopup, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+        import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
         import { getDatabase, ref, push, set, get, onValue, update } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
 
         const firebaseConfig = {
@@ -181,52 +215,110 @@
 
         const app = initializeApp(firebaseConfig);
         const auth = getAuth(app);
-        const provider = new GoogleAuthProvider();
         const db = getDatabase(app);
 
-        const signinBtn = document.getElementById('google-signin');
-        const statusEl = document.getElementById('auth-status');
-        const form = document.getElementById('ticket-form');
-        const userIdEl = document.getElementById('user-id');
-        const userEmailEl = document.getElementById('user-email');
-        const userAdminEl = document.getElementById('user-admin');
-        const userStatusEl = document.getElementById('user-status');
+        const authPanel = document.getElementById('auth-panel');
+        const dashboard = document.getElementById('dashboard');
+        const tabLogin = document.getElementById('tab-login');
+        const tabRegister = document.getElementById('tab-register');
+        const loginForm = document.getElementById('login-form');
+        const registerForm = document.getElementById('register-form');
+        const authErrorEl = document.getElementById('auth-error');
+        const logoutBtn = document.getElementById('logout-btn');
+
+        const userNickEl = document.getElementById('user-nick');
         const userRoleEl = document.getElementById('user-role');
-        const userTicketsEl = document.getElementById('user-tickets');
+        const userStatusEl = document.getElementById('user-status');
         const adminPanel = document.getElementById('admin-panel');
+        const userTicketsEl = document.getElementById('user-tickets');
         const adminTickets = document.getElementById('admin-tickets');
 
-        signinBtn.addEventListener('click', async () => {
+        const chatWrapper = document.getElementById('chat-wrapper');
+        const chatTicketTitle = document.getElementById('chat-ticket-title');
+        const chatMessages = document.getElementById('chat-messages');
+        const chatInput = document.getElementById('chat-input');
+        const chatFile = document.getElementById('chat-file');
+        const chatSend = document.getElementById('chat-send');
+
+        const ticketForm = document.getElementById('ticket-form');
+        const ticketSubmit = document.getElementById('ticket-submit');
+
+        let activeTicketId = null;
+        let activeTicketOwner = null;
+        let cooldown = false;
+
+        const showError = (message) => {
+            authErrorEl.textContent = message;
+            authErrorEl.classList.remove('hidden');
+        };
+
+        const hideError = () => {
+            authErrorEl.textContent = '';
+            authErrorEl.classList.add('hidden');
+        };
+
+        const makeEmailFromNick = (nick) => `${nick.toLowerCase()}@afc.local`;
+
+        tabLogin.addEventListener('click', () => {
+            tabLogin.classList.add('bg-[#3f4d36]', 'text-white');
+            tabRegister.classList.remove('bg-[#3f4d36]', 'text-white');
+            tabRegister.classList.add('border', 'border-[#3f4d36]', 'text-gray-300');
+            loginForm.classList.remove('hidden');
+            registerForm.classList.add('hidden');
+            hideError();
+        });
+
+        tabRegister.addEventListener('click', () => {
+            tabRegister.classList.add('bg-[#3f4d36]', 'text-white');
+            tabLogin.classList.remove('bg-[#3f4d36]', 'text-white');
+            tabLogin.classList.add('border', 'border-[#3f4d36]', 'text-gray-300');
+            registerForm.classList.remove('hidden');
+            loginForm.classList.add('hidden');
+            hideError();
+        });
+
+        loginForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            hideError();
+            const nick = document.getElementById('login-nick').value.trim();
+            const password = document.getElementById('login-password').value.trim();
+            if (!nick || !password) return;
+
             try {
-                await signInWithPopup(auth, provider);
+                await signInWithEmailAndPassword(auth, makeEmailFromNick(nick), password);
             } catch (error) {
-                alert('Ошибка авторизации: ' + error.message);
+                showError('Ошибка входа: ' + error.message);
             }
         });
 
-        const createUserProfile = async (user) => {
-            const userRef = ref(db, `users/${user.uid}`);
-            const snapshot = await get(userRef);
-            if (!snapshot.exists()) {
-                await set(userRef, {
-                    email: user.email,
+        registerForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            hideError();
+            const nick = document.getElementById('register-nick').value.trim();
+            const password = document.getElementById('register-password').value.trim();
+            if (!nick || !password) return;
+
+            try {
+                const userCredential = await createUserWithEmailAndPassword(auth, makeEmailFromNick(nick), password);
+                const user = userCredential.user;
+                await set(ref(db, `users/${user.uid}`), {
+                    nick,
                     admin: false,
                     createdAt: new Date().toISOString()
                 });
+            } catch (error) {
+                showError('Ошибка регистрации: ' + error.message);
             }
-        };
+        });
 
-        const renderTickets = (tickets, container, emptyText, options = {}) => {
-            const entries = Array.isArray(tickets)
-                ? tickets
-                : Object.entries(tickets || {}).map(([id, ticket]) => ({ id, ...ticket }));
+        logoutBtn.addEventListener('click', () => signOut(auth));
 
-            if (!entries.length) {
-                container.innerHTML = `<p>${emptyText}</p>`;
+        const renderTickets = (tickets, container, options = {}) => {
+            if (!tickets.length) {
+                container.innerHTML = '<p>Нет тикетов.</p>';
                 return;
             }
 
-            const statusOptions = ['Новый', 'В работе', 'Выполнен', 'Отклонен'];
             const statusStyles = {
                 'Новый': 'text-blue-300 border-blue-500/60 bg-blue-500/10',
                 'В работе': 'text-yellow-300 border-yellow-500/60 bg-yellow-500/10',
@@ -234,16 +326,16 @@
                 'Отклонен': 'text-red-300 border-red-500/60 bg-red-500/10'
             };
 
-            container.innerHTML = entries.map((ticket) => {
+            container.innerHTML = tickets.map(ticket => {
                 const status = ticket.status || 'Новый';
-                const statusSelect = statusOptions.map(option => (
-                    `<option value="${option}" ${option === status ? 'selected' : ''}>${option}</option>`
-                )).join('');
                 const adminControls = options.admin ? `
                     <div class="mt-3 grid grid-cols-1 sm:grid-cols-[auto_1fr] gap-2 items-center">
                         <span class="text-xs uppercase tracking-widest text-gray-500">Статус</span>
                         <select class="admin-status bg-[#0a0b09] border border-[#3f4d36] text-white px-3 py-2 text-sm" data-id="${ticket.id}" data-uid="${ticket.uid}">
-                            ${statusSelect}
+                            <option value="Новый" ${status === 'Новый' ? 'selected' : ''}>Новый</option>
+                            <option value="В работе" ${status === 'В работе' ? 'selected' : ''}>В работе</option>
+                            <option value="Выполнен" ${status === 'Выполнен' ? 'selected' : ''}>Выполнен</option>
+                            <option value="Отклонен" ${status === 'Отклонен' ? 'selected' : ''}>Отклонен</option>
                         </select>
                     </div>
                 ` : '';
@@ -260,8 +352,10 @@
                         <p class="text-gray-500 text-sm mb-2">${ticket.description}</p>
                         <div class="flex flex-wrap gap-3 text-xs text-gray-600">
                             <span>Контакт: ${ticket.contact}</span>
-                            <span>${options.admin ? 'Пользователь' : 'Автор'}: ${ticket.email || '—'}</span>
-                            <span>Создан: ${new Date(ticket.createdAt || Date.now()).toLocaleString('ru-RU')}</span>
+                            <span>Автор: ${ticket.nick}</span>
+                            <button class="ml-auto text-[#658451] text-xs uppercase tracking-widest open-chat" data-id="${ticket.id}" data-title="${ticket.subject}" data-owner="${ticket.uid}">
+                                Открыть чат
+                            </button>
                         </div>
                         ${adminControls}
                     </div>
@@ -269,10 +363,48 @@
             }).join('');
         };
 
+        const loadChats = (ticketId) => {
+            if (!ticketId) return;
+            const chatRef = ref(db, `ticketChats/${ticketId}`);
+            onValue(chatRef, snapshot => {
+                const messages = snapshot.val() || {};
+                const list = Object.values(messages);
+                if (!list.length) {
+                    chatMessages.innerHTML = '<p class="text-gray-500 text-sm">Сообщений нет.</p>';
+                    return;
+                }
+                chatMessages.innerHTML = list.map(msg => {
+                    const time = new Date(msg.createdAt).toLocaleString('ru-RU');
+                    return `
+                        <div class="bg-[#0a0b09] border border-[#3f4d36] p-3">
+                            <div class="text-xs text-gray-500 mb-2">${msg.author} • ${time}</div>
+                            <div class="text-gray-300 text-sm">${msg.text || ''}</div>
+                            ${msg.image ? `<img src="${msg.image}" alt="photo" class="mt-2 max-h-48 border border-[#3f4d36]">` : ''}
+                        </div>
+                    `;
+                }).join('');
+            });
+        };
+
+        const attachChatHandlers = () => {
+            document.querySelectorAll('.open-chat').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    activeTicketId = btn.dataset.id;
+                    activeTicketOwner = btn.dataset.owner;
+                    chatTicketTitle.textContent = btn.dataset.title;
+                    chatWrapper.classList.remove('hidden');
+                    loadChats(activeTicketId);
+                });
+            });
+        };
+
         const loadTickets = (uid, isAdmin) => {
             const userTicketsRef = ref(db, `tickets/${uid}`);
             onValue(userTicketsRef, snapshot => {
-                renderTickets(snapshot.val(), userTicketsEl, 'Заявки отсутствуют.');
+                const data = snapshot.val() || {};
+                const tickets = Object.entries(data).map(([id, ticket]) => ({ id, uid, ...ticket }));
+                renderTickets(tickets, userTicketsEl);
+                attachChatHandlers();
             });
 
             if (isAdmin) {
@@ -280,14 +412,13 @@
                 onValue(allTicketsRef, snapshot => {
                     const data = snapshot.val() || {};
                     const allTickets = [];
-
                     Object.entries(data).forEach(([userId, userTickets]) => {
                         Object.entries(userTickets || {}).forEach(([id, ticket]) => {
                             allTickets.push({ id, uid: userId, ...ticket });
                         });
                     });
-
-                    renderTickets(allTickets, adminTickets, 'Нет тикетов.', { admin: true });
+                    renderTickets(allTickets, adminTickets, { admin: true });
+                    attachChatHandlers();
 
                     adminTickets.querySelectorAll('.admin-status').forEach(select => {
                         select.addEventListener('change', async (event) => {
@@ -304,45 +435,35 @@
 
         onAuthStateChanged(auth, async user => {
             if (!user) {
-                statusEl.textContent = 'Не авторизован';
-                form.classList.add('hidden');
-                userIdEl.textContent = '—';
-                userEmailEl.textContent = '—';
-                userStatusEl.textContent = 'Оффлайн';
-                userAdminEl.textContent = 'false';
-                userRoleEl.textContent = 'Пользователь';
-                userTicketsEl.innerHTML = '<p>Авторизуйтесь, чтобы видеть ваши заявки.</p>';
-                adminPanel.style.display = 'none';
+                authPanel.classList.remove('hidden');
+                dashboard.classList.add('hidden');
                 return;
             }
 
-            await createUserProfile(user);
+            authPanel.classList.add('hidden');
+            dashboard.classList.remove('hidden');
+
             const userRef = ref(db, `users/${user.uid}`);
             const snapshot = await get(userRef);
-            const userData = snapshot.val() || { admin: false };
+            const userData = snapshot.val() || { admin: false, nick: 'Боец' };
 
-            statusEl.innerHTML = `В сети: ${user.displayName} <button id="logout" class="ml-2 text-xs text-[#658451]">Выйти</button>`;
-            document.getElementById('logout').addEventListener('click', () => signOut(auth));
-
-            form.classList.remove('hidden');
-            userIdEl.textContent = user.uid;
-            userEmailEl.textContent = user.email;
-            userStatusEl.textContent = 'В сети';
-            userAdminEl.textContent = userData.admin ? 'true' : 'false';
-            userRoleEl.textContent = userData.admin ? 'Администратор' : 'Пользователь';
-            userStatusEl.className = 'text-emerald-300';
+            userNickEl.textContent = userData.nick || 'Боец';
+            userRoleEl.textContent = userData.admin ? 'Администратор' : 'Боец';
+            userStatusEl.textContent = userData.admin ? 'Админ онлайн' : 'В сети';
+            userStatusEl.className = userData.admin ? 'text-red-300' : 'text-emerald-300';
 
             if (userData.admin) {
-                adminPanel.style.display = 'block';
+                adminPanel.classList.remove('hidden');
             } else {
-                adminPanel.style.display = 'none';
+                adminPanel.classList.add('hidden');
             }
 
             loadTickets(user.uid, userData.admin);
         });
 
-        form.addEventListener('submit', async (e) => {
+        ticketForm.addEventListener('submit', async (e) => {
             e.preventDefault();
+            if (cooldown) return;
             const user = auth.currentUser;
             if (!user) return;
 
@@ -350,6 +471,11 @@
             const description = document.getElementById('ticket-description').value.trim();
             const priority = document.getElementById('ticket-priority').value;
             const contact = document.getElementById('ticket-contact').value.trim();
+            if (!subject || !description || !contact) return;
+
+            const userRef = ref(db, `users/${user.uid}`);
+            const userSnapshot = await get(userRef);
+            const userData = userSnapshot.val() || { nick: 'Боец' };
 
             const ticketRef = push(ref(db, `tickets/${user.uid}`));
             await set(ticketRef, {
@@ -357,12 +483,55 @@
                 description,
                 priority,
                 contact,
-                email: user.email,
+                nick: userData.nick || 'Боец',
                 status: 'Новый',
                 createdAt: new Date().toISOString()
             });
 
-            form.reset();
+            ticketForm.reset();
+            cooldown = true;
+            ticketSubmit.textContent = 'Подождите 10 секунд...';
+            setTimeout(() => {
+                cooldown = false;
+                ticketSubmit.textContent = 'Отправить тикет';
+            }, 10000);
+        });
+
+        chatSend.addEventListener('click', async () => {
+            const user = auth.currentUser;
+            if (!user || !activeTicketId) return;
+            const text = chatInput.value.trim();
+            const file = chatFile.files[0];
+            let imageData = '';
+
+            if (file) {
+                if (file.size > 1024 * 1024) {
+                    alert('Файл слишком большой. Максимум 1 МБ.');
+                    return;
+                }
+                imageData = await new Promise((resolve) => {
+                    const reader = new FileReader();
+                    reader.onload = () => resolve(reader.result);
+                    reader.readAsDataURL(file);
+                });
+            }
+
+            if (!text && !imageData) return;
+
+            const userRef = ref(db, `users/${user.uid}`);
+            const userSnapshot = await get(userRef);
+            const userData = userSnapshot.val() || { nick: 'Боец' };
+
+            const messageRef = push(ref(db, `ticketChats/${activeTicketId}`));
+            await set(messageRef, {
+                author: userData.nick || 'Боец',
+                text,
+                image: imageData,
+                createdAt: new Date().toISOString()
+            });
+
+            chatInput.value = '';
+            chatFile.value = '';
         });
     </script>
 </body>
