@@ -466,6 +466,148 @@ footer a:hover {
     align-items: start;
 }
 
+.order-panel,
+.order-sidebar {
+    position: relative;
+    isolation: isolate;
+}
+
+.panel-glow {
+    position: relative;
+    overflow: hidden;
+}
+
+.panel-glow::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(circle at top right, rgba(101, 132, 81, 0.15), transparent 55%);
+    opacity: 0;
+    transition: opacity 0.4s ease;
+    z-index: -1;
+}
+
+.panel-glow:hover::after {
+    opacity: 1;
+}
+
+.ticket-card {
+    border: 1px solid rgba(101, 132, 81, 0.25);
+    background: rgba(10, 11, 9, 0.7);
+    padding: 1rem;
+    border-radius: 0.75rem;
+    transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+}
+
+.ticket-card:hover {
+    transform: translateY(-4px);
+    border-color: rgba(101, 132, 81, 0.5);
+    box-shadow: 0 12px 25px rgba(0, 0, 0, 0.35);
+}
+
+.ticket-card .ticket-title {
+    font-family: 'Teko', sans-serif;
+    font-size: 1.4rem;
+    color: #e2f2d3;
+}
+
+.ticket-status {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    border-radius: 999px;
+    padding: 0.2rem 0.7rem;
+    font-size: 0.7rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    border: 1px solid transparent;
+}
+
+.chat-bubble {
+    background: rgba(10, 11, 9, 0.85);
+    border: 1px solid rgba(101, 132, 81, 0.3);
+    padding: 0.85rem;
+    border-radius: 0.75rem;
+    animation: fadeInUp 0.35s ease;
+}
+
+.pulse-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: #34d399;
+    box-shadow: 0 0 10px rgba(52, 211, 153, 0.7);
+    animation: pulse 1.6s infinite;
+}
+
+@keyframes pulse {
+    0%, 100% { transform: scale(1); opacity: 0.8; }
+    50% { transform: scale(1.5); opacity: 0.4; }
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(12px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.stat-chip {
+    background: rgba(18, 20, 16, 0.85);
+    border: 1px solid rgba(101, 132, 81, 0.3);
+    padding: 0.8rem 1rem;
+    border-radius: 0.75rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
+    transition: transform 0.3s ease, border-color 0.3s ease;
+}
+
+.stat-chip:hover {
+    transform: translateY(-3px);
+    border-color: rgba(101, 132, 81, 0.6);
+}
+
+.stat-chip .stat-value {
+    font-family: 'Teko', sans-serif;
+    font-size: 2rem;
+    color: var(--afc-green);
+}
+
+@media (max-width: 1024px) {
+    .order-layout {
+        grid-template-columns: 1fr !important;
+    }
+
+    .order-panel,
+    .order-sidebar {
+        width: 100%;
+    }
+}
+
+@media (max-width: 640px) {
+    .order-panel,
+    .order-sidebar {
+        padding: 1.25rem !important;
+    }
+
+    #ticket-form input,
+    #ticket-form textarea,
+    #ticket-form select {
+        font-size: 0.95rem;
+    }
+
+    #user-tickets,
+    #admin-tickets {
+        max-height: 50vh;
+        overflow-y: auto;
+    }
+}
+
 @media (max-width: 1024px) {
     .order-layout {
         grid-template-columns: 1fr !important;
