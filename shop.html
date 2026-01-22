@@ -577,7 +577,10 @@
                 ` : '';
 
                 const userArchive = options.user ? `
-                    <button class="ticket-archive text-xs uppercase tracking-widest text-gray-500 hover:text-white" data-id="${ticket.id}">Скрыть</button>
+                    <div class="flex flex-wrap gap-2 ml-auto">
+                        <button class="ticket-archive text-xs uppercase tracking-widest text-gray-500 hover:text-white" data-id="${ticket.id}">Удалить (архив)</button>
+                        <button class="ticket-delete text-xs uppercase tracking-widest text-red-300 hover:text-white" data-id="${ticket.id}">Удалить (навсегда)</button>
+                    </div>
                 ` : '';
 
                 return `
@@ -662,7 +665,19 @@
                     const user = auth.currentUser;
                     if (!user) return;
                     const ticketRef = ref(db, `tickets/${user.uid}/${ticketId}`);
-                    await update(ticketRef, { archivedByUser: true });
+                    await update(ticketRef, { archivedByUser: true, archived: true });
+                });
+            });
+
+            document.querySelectorAll('.ticket-delete').forEach(btn => {
+                btn.addEventListener('click', async () => {
+                    const ticketId = btn.dataset.id;
+                    const user = auth.currentUser;
+                    if (!user) return;
+                    const confirmDelete = confirm('Удалить тикет навсегда?');
+                    if (!confirmDelete) return;
+                    await remove(ref(db, `tickets/${user.uid}/${ticketId}`));
+                    await remove(ref(db, `ticketChats/${ticketId}`));
                 });
             });
 
