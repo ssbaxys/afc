@@ -587,7 +587,8 @@
                         </select>
                     </div>
                     <div class="mt-3 flex flex-wrap gap-2 text-xs">
-                        <button class="admin-archive px-3 py-1 border border-[#3f4d36] text-gray-300 hover:text-white ${isArchived ? 'opacity-50 cursor-not-allowed' : ''}" data-id="${ticket.id}" data-uid="${ticket.uid}" ${isArchived ? 'disabled' : ''}>Архивировать</button>
+                        <button class="admin-archive px-3 py-1 border border-[#3f4d36] text-gray-300 hover:text-white ${isArchived ? 'hidden' : ''}" data-id="${ticket.id}" data-uid="${ticket.uid}">Архивировать</button>
+                        <button class="admin-unarchive px-3 py-1 border border-emerald-500/50 text-emerald-300 hover:text-white ${isArchived ? '' : 'hidden'}" data-id="${ticket.id}" data-uid="${ticket.uid}">Разархивировать</button>
                         <button class="admin-delete px-3 py-1 border border-red-500/50 text-red-300 hover:text-white" data-id="${ticket.id}" data-uid="${ticket.uid}">Удалить навсегда</button>
                     </div>
                 ` : '';
@@ -642,13 +643,12 @@
         };
 
         const renderUserPreview = () => {
-            const visibleTickets = userTicketsCache.filter(ticket => !ticket.archivedByUser);
-            const preview = visibleTickets.slice(0, 3);
+            const preview = userTicketsCache.slice(0, 3);
             renderTicketCards(preview, userTicketsEl, { user: true });
         };
 
         const renderUserModal = () => {
-            const filtered = filterTickets(userTicketsCache.filter(ticket => !ticket.archivedByUser), {
+            const filtered = filterTickets(userTicketsCache, {
                 search: userSearch.value,
                 status: userStatusFilter.value,
                 date: userDateFilter.value
@@ -690,6 +690,16 @@
                 });
             });
 
+            document.querySelectorAll('.ticket-unarchive').forEach(btn => {
+                btn.addEventListener('click', async () => {
+                    const ticketId = btn.dataset.id;
+                    const user = auth.currentUser;
+                    if (!user) return;
+                    const ticketRef = ref(db, `tickets/${user.uid}/${ticketId}`);
+                    await update(ticketRef, { archivedByUser: false, archived: false });
+                });
+            });
+
 
             document.querySelectorAll('.admin-status').forEach(select => {
                 select.addEventListener('change', async (event) => {
@@ -708,6 +718,15 @@
                     const userId = btn.dataset.uid;
                     const ticketRef = ref(db, `tickets/${userId}/${ticketId}`);
                     await update(ticketRef, { archived: true });
+                });
+            });
+
+            document.querySelectorAll('.admin-unarchive').forEach(btn => {
+                btn.addEventListener('click', async () => {
+                    const ticketId = btn.dataset.id;
+                    const userId = btn.dataset.uid;
+                    const ticketRef = ref(db, `tickets/${userId}/${ticketId}`);
+                    await update(ticketRef, { archived: false });
                 });
             });
 

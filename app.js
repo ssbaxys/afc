@@ -267,9 +267,10 @@ document.addEventListener('DOMContentLoaded', () => {
         let isReloading = false;
 
         const fetchSignature = async (url) => {
-            const response = await fetch(url, { method: 'HEAD', cache: 'no-store' });
+            const cacheBustUrl = `${url}?v=${Date.now()}`;
+            const response = await fetch(cacheBustUrl, { method: 'HEAD', cache: 'no-store' });
             if (!response.ok) return '';
-            return `${response.headers.get('etag') || ''}-${response.headers.get('last-modified') || ''}`;
+            return `${response.headers.get('etag') || ''}-${response.headers.get('last-modified') || ''}-${response.headers.get('content-length') || ''}`;
         };
 
         const showOverlay = () => {
