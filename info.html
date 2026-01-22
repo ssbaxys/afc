@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>О нас | AFC - Auxiliary Forces Company</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/js/all.min.js"></script>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=Teko:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body class="antialiased selection:bg-green-700 selection:text-white">
+
+    <!-- Navigation -->
+    <nav class="fixed w-full z-50 bg-[#0a0b09]/90 backdrop-blur-md border-b border-[#3f4d36]">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-20">
+                <a href="index.html" class="flex-shrink-0 flex items-center gap-3">
+                    <img src="logo.png" alt="AFC Logo" class="h-12 w-auto">
+                    <span class="font-bold text-2xl tracking-wider text-gray-100 hidden sm:block font-teko">AFC CLAN</span>
+                </a>
+                <div class="hidden md:block">
+                    <div class="ml-10 flex items-baseline space-x-8">
+                        <a href="index.html" class="hover:text-[#658451] text-gray-300 px-3 py-2 text-lg font-teko tracking-wide transition-colors uppercase">Главная</a>
+                        <a href="info.html" class="nav-active text-white px-3 py-2 text-lg font-teko tracking-wide transition-colors uppercase">О нас</a>
+                        <a href="veli.html" class="hover:text-[#658451] text-gray-300 px-3 py-2 text-lg font-teko tracking-wide transition-colors uppercase">VELI</a>
+                        <a href="media.html" class="hover:text-[#658451] text-gray-300 px-3 py-2 text-lg font-teko tracking-wide transition-colors uppercase">Медиа</a>
+                        <a href="work.html" class="hover:text-[#658451] text-gray-300 px-3 py-2 text-lg font-teko tracking-wide transition-colors uppercase">Деятельность</a>
+                        <a href="shop.html" class="hover:text-[#658451] text-gray-300 px-3 py-2 text-lg font-teko tracking-wide transition-colors uppercase">Заказы</a>
+                        <a href="join.html" class="bg-[#3f4d36] hover:bg-[#2d3826] text-white px-4 py-1 text-lg font-teko tracking-wide transition-all border border-[#658451] uppercase">Вступить</a>
+                    </div>
+                </div>
+                <div class="-mr-2 flex md:hidden">
+                    <button type="button" id="mobile-menu-btn" class="text-gray-400 hover:text-white focus:outline-none p-2">
+                        <i class="fas fa-bars text-2xl"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mobile menu -->
+        <div class="hidden md:hidden bg-black/95 border-b border-green-900" id="mobile-menu">
+            <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3 text-center">
+                <a href="index.html" class="text-gray-300 block px-3 py-2 text-xl font-teko uppercase">Главная</a>
+                <a href="info.html" class="text-[#658451] block px-3 py-2 text-xl font-teko uppercase">О нас</a>
+                <a href="veli.html" class="text-gray-300 block px-3 py-2 text-xl font-teko uppercase">VELI</a>
+                <a href="media.html" class="text-gray-300 block px-3 py-2 text-xl font-teko uppercase">Медиа</a>
+                <a href="work.html" class="text-gray-300 block px-3 py-2 text-xl font-teko uppercase">Деятельность</a>
+                <a href="shop.html" class="text-gray-300 block px-3 py-2 text-xl font-teko uppercase">Заказы</a>
+                <a href="join.html" class="text-white block px-3 py-2 text-xl font-teko uppercase font-bold">Вступить</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Page Header -->
+    <section class="page-header pt-20" style="background-image: url('stroi.png');">
+        <div class="absolute inset-0 page-header-overlay"></div>
+        <div class="relative z-10 text-center px-4 py-20">
+            <h1 class="text-5xl md:text-7xl font-bold text-white mb-4 font-teko">О <span class="text-[#658451]">НАС</span></h1>
+            <p class="text-xl text-gray-400">Узнайте историю и ценности AFC</p>
+        </div>
+    </section>
+
+    <!-- History Section -->
+    <section class="py-24 bg-[#0a0b09] fade-in-section">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-start">
+                <div>
+                    <h2 class="text-4xl md:text-5xl font-bold text-white mb-8 border-l-4 border-[#658451] pl-4 font-teko">НАША ИСТОРИЯ</h2>
+                    
+                    <div class="timeline">
+                        <div class="timeline-item">
+                            <h3 class="text-2xl text-[#658451] font-teko mb-2">2023 — ОСНОВАНИЕ</h3>
+                            <p class="text-gray-400">Клан AFC был создан группой энтузиастов с целью объединить игроков, желающих принести победу Колонистам. Мы начинали как небольшая группа друзей.</p>
+                        </div>
+                        <div class="timeline-item">
+                            <h3 class="text-2xl text-[#658451] font-teko mb-2">2024 — РОСТ</h3>
+                            <p class="text-gray-400">Клан вырос из группы товарищей в серьезную организацию. Мы начали составлять конкуренцию по онлайну и профессионализму другим русскоязычным кланам.</p>
+                        </div>
+                        <div class="timeline-item">
+                            <h3 class="text-2xl text-[#658451] font-teko mb-2">2025 — КОАЛИЦИЯ VELI</h3>
+                            <p class="text-gray-400">Вступили в международную коалицию VELI, начали активное сотрудничество с англоязычными кланами и не только. Расширили направления деятельности.</p>
+                        </div>
+                        <div class="timeline-item">
+                            <h3 class="text-2xl text-[#658451] font-teko mb-2">2026 — СЕГОДНЯ</h3>
+                            <p class="text-gray-400">Продолжаем расти и развиваться, являемся одним из ведущих кланов Колонистов. Фокусируемся на обучении новых игроков и совершенствовании тактик.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="space-y-8">
+                    <div class="relative">
+                        <div class="absolute -inset-4 bg-[#658451]/10 transform -rotate-2"></div>
+                        <img src="stroi.png" alt="AFC History" class="relative w-full shadow-2xl border border-[#3f4d36]">
+                    </div>
+                    
+                    <div class="tactical-border p-6 bg-[#121410]">
+                        <h3 class="text-2xl text-[#658451] font-teko mb-4">НАША ФИЛОСОФИЯ</h3>
+                        <p class="text-gray-400 text-lg italic">"Мы играем мозгами, а не массой"</p>
+                        <p class="text-gray-500 mt-4">Мы верим, что тактика и координация важнее численности. Каждый боец AFC — это думающий солдат, а не пушечное мясо.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Values Section -->
+    <section class="py-24 bg-[#0f110e] fade-in-section border-t border-[#1a1d18]">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <h2 class="text-4xl md:text-5xl font-bold text-white mb-16 text-center font-teko">НАШИ <span class="text-[#658451]">ЦЕННОСТИ</span></h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div class="tactical-border p-8 bg-[#121410] text-center hover:bg-[#1a1d18] transition-colors">
+                    <i class="fas fa-users text-5xl text-[#658451] mb-6"></i>
+                    <h3 class="text-2xl text-white font-teko mb-4">КОЛЛЕКТИВ</h3>
+                    <p class="text-gray-500">Мы не просто клан — мы семья. Каждый член AFC может рассчитывать на поддержку товарищей как в игре, так и за её пределами.</p>
+                </div>
+                <div class="tactical-border p-8 bg-[#121410] text-center hover:bg-[#1a1d18] transition-colors">
+                    <i class="fas fa-graduation-cap text-5xl text-[#658451] mb-6"></i>
+                    <h3 class="text-2xl text-white font-teko mb-4">ОБУЧЕНИЕ</h3>
+                    <p class="text-gray-500">Ветераны делятся опытом с новичками. Мы сфокусированы на поиске и обучении новых игроков, помогая им стать профессионалами.</p>
+                </div>
+                <div class="tactical-border p-8 bg-[#121410] text-center hover:bg-[#1a1d18] transition-colors">
+                    <i class="fas fa-handshake text-5xl text-[#658451] mb-6"></i>
+                    <h3 class="text-2xl text-white font-teko mb-4">СОТРУДНИЧЕСТВО</h3>
+                    <p class="text-gray-500">Активно работаем с другими кланами, включая англоязычные. Являемся частью международной коалиции VELI.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Coalition Link Section -->
+    <section class="py-24 bg-[#0a0b09] fade-in-section">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <i class="fas fa-globe text-6xl text-[#658451] mb-6"></i>
+            <h2 class="text-4xl md:text-5xl font-bold text-white mb-6 font-teko">КОАЛИЦИЯ <span class="text-[#658451]">VELI</span></h2>
+            <p class="text-gray-400 mb-8 text-lg">Мы являемся частью международной коалиции VELI — объединения кланов Колонистов со всего мира.</p>
+            <a href="veli.html" class="inline-flex items-center gap-3 bg-[#3f4d36] hover:bg-[#2d3826] text-white px-8 py-4 text-2xl font-teko uppercase tracking-wider transition-all border border-[#658451]">
+                Подробнее о VELI <i class="fas fa-arrow-right"></i>
+            </a>
+        </div>
+    </section>
+
+    <!-- CTA -->
+    <section class="py-20 bg-[#0f110e] border-t border-[#1a1d18]">
+        <div class="max-w-4xl mx-auto px-4 text-center">
+            <h2 class="text-4xl font-bold text-white mb-6 font-teko">ХОЧЕШЬ СТАТЬ ЧАСТЬЮ AFC?</h2>
+            <p class="text-gray-400 mb-8">Присоединяйся к нашему Discord серверу и начни свой путь</p>
+            <a href="join.html" class="inline-flex items-center gap-3 bg-[#658451] hover:bg-[#4d663d] text-white px-8 py-4 text-2xl font-teko uppercase tracking-wider transition-all">
+                Вступить сейчас <i class="fas fa-arrow-right"></i>
+            </a>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-[#050505] py-10 border-t border-[#1a1d18]">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row justify-between items-center gap-6">
+            <div class="flex items-center gap-3">
+                <img src="logo.png" alt="Logo" class="h-8 w-auto grayscale opacity-50">
+                <span class="text-gray-500 font-teko text-xl tracking-widest">&copy; 2026 AFC CLAN | сайт создан @ssbaxys</span>
+            </div>
+            
+            <div class="flex space-x-8">
+                <a href="https://discord.com/invite/join-afc" class="text-gray-500 hover:text-[#5865F2] transition-colors">
+                    <i class="fab fa-discord text-2xl"></i>
+                </a>
+                <a href="https://www.youtube.com/@wanted2127/videos" class="text-gray-500 hover:text-red-600 transition-colors">
+                    <i class="fab fa-youtube text-2xl"></i>
+                </a>
+            </div>
+        </div>
+    </footer>
+
+    <script src="app.js"></script>
+</body>
+</html>

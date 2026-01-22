@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Заказы | AFC - Auxiliary Forces Company</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/js/all.min.js"></script>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=Teko:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body class="antialiased selection:bg-green-700 selection:text-white">
+
+    <!-- Navigation -->
+    <nav class="fixed w-full z-50 bg-[#0a0b09]/90 backdrop-blur-md border-b border-[#3f4d36]">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-20">
+                <a href="index.html" class="flex-shrink-0 flex items-center gap-3">
+                    <img src="logo.png" alt="AFC Logo" class="h-12 w-auto">
+                    <span class="font-bold text-2xl tracking-wider text-gray-100 hidden sm:block font-teko">AFC CLAN</span>
+                </a>
+                <div class="hidden md:block">
+                    <div class="ml-10 flex items-baseline space-x-8">
+                        <a href="index.html" class="hover:text-[#658451] text-gray-300 px-3 py-2 text-lg font-teko tracking-wide transition-colors uppercase">Главная</a>
+                        <a href="info.html" class="hover:text-[#658451] text-gray-300 px-3 py-2 text-lg font-teko tracking-wide transition-colors uppercase">О нас</a>
+                        <a href="veli.html" class="hover:text-[#658451] text-gray-300 px-3 py-2 text-lg font-teko tracking-wide transition-colors uppercase">VELI</a>
+                        <a href="media.html" class="hover:text-[#658451] text-gray-300 px-3 py-2 text-lg font-teko tracking-wide transition-colors uppercase">Медиа</a>
+                        <a href="work.html" class="hover:text-[#658451] text-gray-300 px-3 py-2 text-lg font-teko tracking-wide transition-colors uppercase">Деятельность</a>
+                        <a href="shop.html" class="nav-active text-white px-3 py-2 text-lg font-teko tracking-wide transition-colors uppercase">Заказы</a>
+                        <a href="join.html" class="bg-[#3f4d36] hover:bg-[#2d3826] text-white px-4 py-1 text-lg font-teko tracking-wide transition-all border border-[#658451] uppercase">Вступить</a>
+                    </div>
+                </div>
+                <div class="-mr-2 flex md:hidden">
+                    <button type="button" id="mobile-menu-btn" class="text-gray-400 hover:text-white focus:outline-none p-2">
+                        <i class="fas fa-bars text-2xl"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mobile menu -->
+        <div class="hidden md:hidden bg-black/95 border-b border-green-900" id="mobile-menu">
+            <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3 text-center">
+                <a href="index.html" class="text-gray-300 block px-3 py-2 text-xl font-teko uppercase">Главная</a>
+                <a href="info.html" class="text-gray-300 block px-3 py-2 text-xl font-teko uppercase">О нас</a>
+                <a href="veli.html" class="text-gray-300 block px-3 py-2 text-xl font-teko uppercase">VELI</a>
+                <a href="media.html" class="text-gray-300 block px-3 py-2 text-xl font-teko uppercase">Медиа</a>
+                <a href="work.html" class="text-gray-300 block px-3 py-2 text-xl font-teko uppercase">Деятельность</a>
+                <a href="shop.html" class="text-[#658451] block px-3 py-2 text-xl font-teko uppercase">Заказы</a>
+                <a href="join.html" class="text-white block px-3 py-2 text-xl font-teko uppercase font-bold">Вступить</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Page Header -->
+    <section class="page-header pt-20" style="background-image: url('stroi.png');">
+        <div class="absolute inset-0 page-header-overlay"></div>
+        <div class="relative z-10 text-center px-4 py-20">
+            <h1 class="text-5xl md:text-7xl font-bold text-white mb-4 font-teko">ЗАКАЗЫ <span class="text-[#658451]">AFC</span></h1>
+            <p class="text-xl text-gray-400">Подача заявок и управление тикетами</p>
+        </div>
+    </section>
+
+    <section class="py-24 bg-[#0a0b09] fade-in-section">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 lg:grid-cols-[1.1fr_0.9fr] gap-10 order-layout">
+                <div class="tactical-border p-8 bg-[#121410] order-panel">
+                    <div class="flex items-center justify-between flex-wrap gap-4 mb-8">
+                        <h2 class="text-3xl text-white font-teko">СОЗДАТЬ ТИКЕТ</h2>
+                        <div id="auth-status" class="text-sm text-gray-400">Не авторизован</div>
+                    </div>
+
+                    <div class="space-y-6">
+                        <div class="bg-[#0f110e] p-6 tactical-border">
+                            <h3 class="text-xl text-[#658451] font-teko mb-2">Вход через Google</h3>
+                            <p class="text-gray-500 text-sm mb-4">Войдите, чтобы создать заказ и отслеживать его статус.</p>
+                            <button id="google-signin" class="inline-flex items-center gap-3 bg-[#3f4d36] hover:bg-[#2d3826] text-white px-6 py-3 font-teko text-xl uppercase tracking-wider transition-all border border-[#658451]">
+                                <i class="fab fa-google"></i>
+                                Войти через Google
+                            </button>
+                        </div>
+
+                        <form id="ticket-form" class="space-y-5 hidden">
+                            <div>
+                                <label class="text-gray-400 text-sm uppercase tracking-widest">Тема заказа</label>
+                                <input type="text" id="ticket-subject" class="w-full mt-2 bg-[#0a0b09] border border-[#3f4d36] text-white px-4 py-3 focus:outline-none focus:border-[#658451]" placeholder="Например: Логистика в Foul Basin" required>
+                            </div>
+                            <div>
+                                <label class="text-gray-400 text-sm uppercase tracking-widest">Описание</label>
+                                <textarea id="ticket-description" rows="5" class="w-full mt-2 bg-[#0a0b09] border border-[#3f4d36] text-white px-4 py-3 focus:outline-none focus:border-[#658451]" placeholder="Опишите задачу, сроки и требования" required></textarea>
+                            </div>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <div>
+                                    <label class="text-gray-400 text-sm uppercase tracking-widest">Приоритет</label>
+                                    <select id="ticket-priority" class="w-full mt-2 bg-[#0a0b09] border border-[#3f4d36] text-white px-4 py-3 focus:outline-none focus:border-[#658451]">
+                                        <option value="Обычный">Обычный</option>
+                                        <option value="Высокий">Высокий</option>
+                                        <option value="Критический">Критический</option>
+                                    </select>
+                                </div>
+                                <div>
+                                    <label class="text-gray-400 text-sm uppercase tracking-widest">Канал связи</label>
+                                    <input type="text" id="ticket-contact" class="w-full mt-2 bg-[#0a0b09] border border-[#3f4d36] text-white px-4 py-3 focus:outline-none focus:border-[#658451]" placeholder="Discord / Steam / Nick" required>
+                                </div>
+                            </div>
+                            <button type="submit" class="w-full bg-[#658451] hover:bg-[#4d663d] text-white px-6 py-3 font-teko text-2xl uppercase tracking-wider transition-all border border-transparent hover:border-[#8da378] shadow-[0_0_15px_rgba(101,132,81,0.3)]">
+                                Отправить тикет
+                            </button>
+                        </form>
+                    </div>
+                </div>
+
+                <div class="space-y-6 order-sidebar">
+                    <div class="tactical-border p-6 bg-[#121410]">
+                        <h3 class="text-2xl text-white font-teko mb-4">СТАТУС ПОЛЬЗОВАТЕЛЯ</h3>
+                        <div class="space-y-3 text-gray-400 text-sm">
+                            <p><span class="text-[#658451]">Google ID:</span> <span id="user-id">—</span></p>
+                            <p><span class="text-[#658451]">Email:</span> <span id="user-email">—</span></p>
+                            <p><span class="text-[#658451]">Статус:</span> <span id="user-status">Оффлайн</span></p>
+                            <p><span class="text-[#658451]">Роль:</span> <span id="user-role">Пользователь</span></p>
+                            <p><span class="text-[#658451]">Admin:</span> <span id="user-admin">false</span></p>
+                        </div>
+                    </div>
+
+                    <div class="tactical-border p-6 bg-[#121410]">
+                        <h3 class="text-2xl text-white font-teko mb-4">МОИ ТИКЕТЫ</h3>
+                        <div id="user-tickets" class="space-y-4 text-gray-400 text-sm">
+                            <p>Авторизуйтесь, чтобы видеть ваши заявки.</p>
+                        </div>
+                    </div>
+
+                    <div class="tactical-border p-6 bg-[#121410]" id="admin-panel" style="display:none;">
+                        <h3 class="text-2xl text-white font-teko mb-4">ПАНЕЛЬ АДМИНА</h3>
+                        <p class="text-gray-500 text-sm mb-4">Доступна только администраторам. Здесь отображаются все тикеты.</p>
+                        <div class="flex flex-wrap gap-3 text-xs text-gray-500 uppercase tracking-widest mb-4">
+                            <span class="px-3 py-1 border border-[#3f4d36]">Live Sync</span>
+                            <span class="px-3 py-1 border border-[#3f4d36]">Realtime Database</span>
+                        </div>
+                        <div id="admin-tickets" class="space-y-4 text-gray-400 text-sm"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="bg-[#050505] py-10 border-t border-[#1a1d18]">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row justify-between items-center gap-6">
+            <div class="flex items-center gap-3">
+                <img src="logo.png" alt="Logo" class="h-8 w-auto grayscale opacity-50">
+                <span class="text-gray-500 font-teko text-xl tracking-widest">&copy; 2026 AFC CLAN | сайт создан @ssbaxys</span>
+            </div>
+            <div class="flex space-x-8">
+                <a href="https://discord.com/invite/join-afc" class="text-gray-500 hover:text-[#5865F2] transition-colors">
+                    <i class="fab fa-discord text-2xl"></i>
+                </a>
+                <a href="https://www.youtube.com/@wanted2127/videos" class="text-gray-500 hover:text-red-600 transition-colors">
+                    <i class="fab fa-youtube text-2xl"></i>
+                </a>
+            </div>
+        </div>
+    </footer>
+
+    <script src="app.js"></script>
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+        import { getAuth, GoogleAuthProvider, signInWithPopup, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+        import { getDatabase, ref, push, set, get, onValue, update } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
+
+        const firebaseConfig = {
+          apiKey: "AIzaSyBRBCKD_86JsJ_x9TRubfSbN4mbj_VIcxI",
+          authDomain: "ssbaxys-2945e.firebaseapp.com",
+          databaseURL: "https://ssbaxys-2945e-default-rtdb.europe-west1.firebasedatabase.app",
+          projectId: "ssbaxys-2945e",
+          storageBucket: "ssbaxys-2945e.firebasestorage.app",
+          messagingSenderId: "952293073742",
+          appId: "1:952293073742:web:a66570635496c7a323f41f",
+          measurementId: "G-SXZENL1KY8"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const provider = new GoogleAuthProvider();
+        const db = getDatabase(app);
+
+        const signinBtn = document.getElementById('google-signin');
+        const statusEl = document.getElementById('auth-status');
+        const form = document.getElementById('ticket-form');
+        const userIdEl = document.getElementById('user-id');
+        const userEmailEl = document.getElementById('user-email');
+        const userAdminEl = document.getElementById('user-admin');
+        const userStatusEl = document.getElementById('user-status');
+        const userRoleEl = document.getElementById('user-role');
+        const userTicketsEl = document.getElementById('user-tickets');
+        const adminPanel = document.getElementById('admin-panel');
+        const adminTickets = document.getElementById('admin-tickets');
+
+        signinBtn.addEventListener('click', async () => {
+            try {
+                await signInWithPopup(auth, provider);
+            } catch (error) {
+                alert('Ошибка авторизации: ' + error.message);
+            }
+        });
+
+        const createUserProfile = async (user) => {
+            const userRef = ref(db, `users/${user.uid}`);
+            const snapshot = await get(userRef);
+            if (!snapshot.exists()) {
+                await set(userRef, {
+                    email: user.email,
+                    admin: false,
+                    createdAt: new Date().toISOString()
+                });
+            }
+        };
+
+        const renderTickets = (tickets, container, emptyText, options = {}) => {
+            const entries = Array.isArray(tickets)
+                ? tickets
+                : Object.entries(tickets || {}).map(([id, ticket]) => ({ id, ...ticket }));
+
+            if (!entries.length) {
+                container.innerHTML = `<p>${emptyText}</p>`;
+                return;
+            }
+
+            const statusOptions = ['Новый', 'В работе', 'Выполнен', 'Отклонен'];
+            const statusStyles = {
+                'Новый': 'text-blue-300 border-blue-500/60 bg-blue-500/10',
+                'В работе': 'text-yellow-300 border-yellow-500/60 bg-yellow-500/10',
+                'Выполнен': 'text-emerald-300 border-emerald-500/60 bg-emerald-500/10',
+                'Отклонен': 'text-red-300 border-red-500/60 bg-red-500/10'
+            };
+
+            container.innerHTML = entries.map((ticket) => {
+                const status = ticket.status || 'Новый';
+                const statusSelect = statusOptions.map(option => (
+                    `<option value="${option}" ${option === status ? 'selected' : ''}>${option}</option>`
+                )).join('');
+                const adminControls = options.admin ? `
+                    <div class="mt-3 grid grid-cols-1 sm:grid-cols-[auto_1fr] gap-2 items-center">
+                        <span class="text-xs uppercase tracking-widest text-gray-500">Статус</span>
+                        <select class="admin-status bg-[#0a0b09] border border-[#3f4d36] text-white px-3 py-2 text-sm" data-id="${ticket.id}" data-uid="${ticket.uid}">
+                            ${statusSelect}
+                        </select>
+                    </div>
+                ` : '';
+
+                return `
+                    <div class="p-4 bg-[#0f110e] border border-[#3f4d36]">
+                        <div class="flex flex-wrap items-center justify-between gap-2 mb-2">
+                            <h4 class="text-[#658451] font-teko text-xl">${ticket.subject}</h4>
+                            <div class="flex items-center gap-2 text-xs">
+                                <span class="text-gray-500">${ticket.priority}</span>
+                                <span class="px-2 py-1 border uppercase ${statusStyles[status] || 'text-gray-300 border-gray-600/60 bg-gray-600/10'}">${status}</span>
+                            </div>
+                        </div>
+                        <p class="text-gray-500 text-sm mb-2">${ticket.description}</p>
+                        <div class="flex flex-wrap gap-3 text-xs text-gray-600">
+                            <span>Контакт: ${ticket.contact}</span>
+                            <span>${options.admin ? 'Пользователь' : 'Автор'}: ${ticket.email || '—'}</span>
+                            <span>Создан: ${new Date(ticket.createdAt || Date.now()).toLocaleString('ru-RU')}</span>
+                        </div>
+                        ${adminControls}
+                    </div>
+                `;
+            }).join('');
+        };
+
+        const loadTickets = (uid, isAdmin) => {
+            const userTicketsRef = ref(db, `tickets/${uid}`);
+            onValue(userTicketsRef, snapshot => {
+                renderTickets(snapshot.val(), userTicketsEl, 'Заявки отсутствуют.');
+            });
+
+            if (isAdmin) {
+                const allTicketsRef = ref(db, 'tickets');
+                onValue(allTicketsRef, snapshot => {
+                    const data = snapshot.val() || {};
+                    const allTickets = [];
+
+                    Object.entries(data).forEach(([userId, userTickets]) => {
+                        Object.entries(userTickets || {}).forEach(([id, ticket]) => {
+                            allTickets.push({ id, uid: userId, ...ticket });
+                        });
+                    });
+
+                    renderTickets(allTickets, adminTickets, 'Нет тикетов.', { admin: true });
+
+                    adminTickets.querySelectorAll('.admin-status').forEach(select => {
+                        select.addEventListener('change', async (event) => {
+                            const ticketId = event.target.dataset.id;
+                            const userId = event.target.dataset.uid;
+                            const newStatus = event.target.value;
+                            const ticketRef = ref(db, `tickets/${userId}/${ticketId}`);
+                            await update(ticketRef, { status: newStatus });
+                        });
+                    });
+                });
+            }
+        };
+
+        onAuthStateChanged(auth, async user => {
+            if (!user) {
+                statusEl.textContent = 'Не авторизован';
+                form.classList.add('hidden');
+                userIdEl.textContent = '—';
+                userEmailEl.textContent = '—';
+                userStatusEl.textContent = 'Оффлайн';
+                userAdminEl.textContent = 'false';
+                userRoleEl.textContent = 'Пользователь';
+                userTicketsEl.innerHTML = '<p>Авторизуйтесь, чтобы видеть ваши заявки.</p>';
+                adminPanel.style.display = 'none';
+                return;
+            }
+
+            await createUserProfile(user);
+            const userRef = ref(db, `users/${user.uid}`);
+            const snapshot = await get(userRef);
+            const userData = snapshot.val() || { admin: false };
+
+            statusEl.innerHTML = `В сети: ${user.displayName} <button id="logout" class="ml-2 text-xs text-[#658451]">Выйти</button>`;
+            document.getElementById('logout').addEventListener('click', () => signOut(auth));
+
+            form.classList.remove('hidden');
+            userIdEl.textContent = user.uid;
+            userEmailEl.textContent = user.email;
+            userStatusEl.textContent = 'В сети';
+            userAdminEl.textContent = userData.admin ? 'true' : 'false';
+            userRoleEl.textContent = userData.admin ? 'Администратор' : 'Пользователь';
+            userStatusEl.className = 'text-emerald-300';
+
+            if (userData.admin) {
+                adminPanel.style.display = 'block';
+            } else {
+                adminPanel.style.display = 'none';
+            }
+
+            loadTickets(user.uid, userData.admin);
+        });
+
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const user = auth.currentUser;
+            if (!user) return;
+
+            const subject = document.getElementById('ticket-subject').value.trim();
+            const description = document.getElementById('ticket-description').value.trim();
+            const priority = document.getElementById('ticket-priority').value;
+            const contact = document.getElementById('ticket-contact').value.trim();
+
+            const ticketRef = push(ref(db, `tickets/${user.uid}`));
+            await set(ticketRef, {
+                subject,
+                description,
+                priority,
+                contact,
+                email: user.email,
+                status: 'Новый',
+                createdAt: new Date().toISOString()
+            });
+
+            form.reset();
+        });
+    </script>
+</body>
+</html>

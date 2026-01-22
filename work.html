@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Деятельность | AFC - Auxiliary Forces Company</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/js/all.min.js"></script>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=Teko:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body class="antialiased selection:bg-green-700 selection:text-white">
+
+    <!-- Navigation -->
+    <nav class="fixed w-full z-50 bg-[#0a0b09]/90 backdrop-blur-md border-b border-[#3f4d36]">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-20">
+                <a href="index.html" class="flex-shrink-0 flex items-center gap-3">
+                    <img src="logo.png" alt="AFC Logo" class="h-12 w-auto">
+                    <span class="font-bold text-2xl tracking-wider text-gray-100 hidden sm:block font-teko">AFC CLAN</span>
+                </a>
+                <div class="hidden md:block">
+                    <div class="ml-10 flex items-baseline space-x-8">
+                        <a href="index.html" class="hover:text-[#658451] text-gray-300 px-3 py-2 text-lg font-teko tracking-wide transition-colors uppercase">Главная</a>
+                        <a href="info.html" class="hover:text-[#658451] text-gray-300 px-3 py-2 text-lg font-teko tracking-wide transition-colors uppercase">О нас</a>
+                        <a href="veli.html" class="hover:text-[#658451] text-gray-300 px-3 py-2 text-lg font-teko tracking-wide transition-colors uppercase">VELI</a>
+                        <a href="media.html" class="hover:text-[#658451] text-gray-300 px-3 py-2 text-lg font-teko tracking-wide transition-colors uppercase">Медиа</a>
+                        <a href="work.html" class="nav-active text-white px-3 py-2 text-lg font-teko tracking-wide transition-colors uppercase">Деятельность</a>
+                        <a href="shop.html" class="hover:text-[#658451] text-gray-300 px-3 py-2 text-lg font-teko tracking-wide transition-colors uppercase">Заказы</a>
+                        <a href="join.html" class="bg-[#3f4d36] hover:bg-[#2d3826] text-white px-4 py-1 text-lg font-teko tracking-wide transition-all border border-[#658451] uppercase">Вступить</a>
+                    </div>
+                </div>
+                <div class="-mr-2 flex md:hidden">
+                    <button type="button" id="mobile-menu-btn" class="text-gray-400 hover:text-white focus:outline-none p-2">
+                        <i class="fas fa-bars text-2xl"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mobile menu -->
+        <div class="hidden md:hidden bg-black/95 border-b border-green-900" id="mobile-menu">
+            <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3 text-center">
+                <a href="index.html" class="text-gray-300 block px-3 py-2 text-xl font-teko uppercase">Главная</a>
+                <a href="info.html" class="text-gray-300 block px-3 py-2 text-xl font-teko uppercase">О нас</a>
+                <a href="veli.html" class="text-gray-300 block px-3 py-2 text-xl font-teko uppercase">VELI</a>
+                <a href="media.html" class="text-gray-300 block px-3 py-2 text-xl font-teko uppercase">Медиа</a>
+                <a href="work.html" class="text-[#658451] block px-3 py-2 text-xl font-teko uppercase">Деятельность</a>
+                <a href="shop.html" class="text-gray-300 block px-3 py-2 text-xl font-teko uppercase">Заказы</a>
+                <a href="join.html" class="text-white block px-3 py-2 text-xl font-teko uppercase font-bold">Вступить</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Page Header -->
+    <section class="page-header pt-20" style="background-image: url('stroi.png');">
+        <div class="absolute inset-0 page-header-overlay"></div>
+        <div class="relative z-10 text-center px-4 py-20">
+            <h1 class="text-5xl md:text-7xl font-bold text-white mb-4 font-teko">НАПРАВЛЕНИЯ <span class="text-[#658451]">ДЕЯТЕЛЬНОСТИ</span></h1>
+            <p class="text-xl text-gray-400">Все сферы игры под нашим контролем</p>
+        </div>
+    </section>
+
+    <!-- Main Activities -->
+    <section class="py-24 bg-[#0a0b09] fade-in-section">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <p class="text-gray-400 text-lg text-center mb-16 max-w-3xl mx-auto">
+                Наш клан занимается всеми сферами деятельности игры Foxhole. От передовой до глубокого тыла — мы везде.
+            </p>
+
+            <!-- Combat Operations -->
+            <div class="mb-20">
+                <h2 class="text-3xl font-bold text-white mb-8 border-l-4 border-[#658451] pl-4 font-teko">БОЕВЫЕ ОПЕРАЦИИ</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                    <div class="tactical-border p-8 bg-[#121410] hover:bg-[#1a1d18] transition-all group">
+                        <i class="fas fa-shield-halved text-5xl text-[#4a5e3b] mb-6 group-hover:text-[#658451] transition-colors"></i>
+                        <h3 class="text-2xl text-white font-teko mb-3">ТАНКИ</h3>
+                        <p class="text-gray-500 mb-4">Бронетанковые клинья — наша специализация. Координированные атаки бронетехникой способны прорвать любую оборону.</p>
+                        <ul class="text-sm text-gray-600 space-y-1">
+                            <li>• Легкие танки</li>
+                            <li>• Средние танки</li>
+                            <li>• Тяжелая бронетехника</li>
+                            <li>• Супер танки</li>
+                        </ul>
+                    </div>
+                    <div class="tactical-border p-8 bg-[#121410] hover:bg-[#1a1d18] transition-all group">
+                        <i class="fas fa-crosshairs text-5xl text-[#4a5e3b] mb-6 group-hover:text-[#658451] transition-colors"></i>
+                        <h3 class="text-2xl text-white font-teko mb-3">АРТИЛЛЕРИЯ</h3>
+                        <p class="text-gray-500 mb-4">Огневой вал, способный сровнять с землей вражеские укрепления. Точность и координация — наш девиз.</p>
+                        <ul class="text-sm text-gray-600 space-y-1">
+                            <li>• Полевые орудия</li>
+                            <li>• Гаубицы</li>
+                            <li>• Ракетные установки</li>
+                            <li>• Осадная артиллерия</li>
+                        </ul>
+                    </div>
+                    <div class="tactical-border p-8 bg-[#121410] hover:bg-[#1a1d18] transition-all group">
+                        <i class="fas fa-person-rifle text-5xl text-[#4a5e3b] mb-6 group-hover:text-[#658451] transition-colors"></i>
+                        <h3 class="text-2xl text-white font-teko mb-3">ПЕХОТА</h3>
+                        <p class="text-gray-500 mb-4">Удержание фронта и штурмовые операции. Пехота — основа любой армии, и мы это понимаем.</p>
+                        <ul class="text-sm text-gray-600 space-y-1">
+                            <li>• Штурмовые отряды</li>
+                            <li>• Оборона позиций</li>
+                            <li>• Снайперы</li>
+                            <li>• Противотанковые расчеты</li>
+                        </ul>
+                    </div>
+                    <div class="tactical-border p-8 bg-[#121410] hover:bg-[#1a1d18] transition-all group">
+                        <i class="fas fa-skull text-5xl text-[#4a5e3b] mb-6 group-hover:text-[#658451] transition-colors"></i>
+                        <h3 class="text-2xl text-white font-teko mb-3">ДРГ</h3>
+                        <p class="text-gray-500 mb-4">Диверсионно-разведывательные группы. Уничтожение логистики, разведка и партизанские операции.</p>
+                        <ul class="text-sm text-gray-600 space-y-1">
+                            <li>• Диверсии</li>
+                            <li>• Разведка</li>
+                            <li>• Партизанские рейды</li>
+                            <li>• Уничтожение баз</li>
+                            <li>• Захват техники</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Support Operations -->
+            <div class="mb-20">
+                <h2 class="text-3xl font-bold text-white mb-8 border-l-4 border-[#658451] pl-4 font-teko">ПОДДЕРЖКА И ЛОГИСТИКА</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <div class="tactical-border p-8 bg-[#121410] hover:bg-[#1a1d18] transition-all group">
+                        <i class="fas fa-boxes text-5xl text-[#4a5e3b] mb-6 group-hover:text-[#658451] transition-colors"></i>
+                        <h3 class="text-2xl text-white font-teko mb-3">ЛОГИСТИКА</h3>
+                        <p class="text-gray-500 mb-4">Кровь войны. Без снабжения фронт падет. Мы обеспечиваем непрерывный поток ресурсов.</p>
+                        <ul class="text-sm text-gray-600 space-y-1">
+                            <li>• Доставка припасов</li>
+                            <li>• Управление складами</li>
+                            <li>• Логистические маршруты</li>
+                        </ul>
+                    </div>
+                    <div class="tactical-border p-8 bg-[#121410] hover:bg-[#1a1d18] transition-all group">
+                        <i class="fas fa-industry text-5xl text-[#4a5e3b] mb-6 group-hover:text-[#658451] transition-colors"></i>
+                        <h3 class="text-2xl text-white font-teko mb-3">ЗАВОДЫ</h3>
+                        <p class="text-gray-500 mb-4">Военная промышленность. Производство техники, оружия и боеприпасов для фронта.</p>
+                        <ul class="text-sm text-gray-600 space-y-1">
+                            <li>• Массовое производство</li>
+                            <li>• Сборка техники</li>
+                            <li>• Переработка ресурсов</li>
+                            <li>• Управление MPF</li>
+                        </ul>
+                    </div>
+                    <div class="tactical-border p-8 bg-[#121410] hover:bg-[#1a1d18] transition-all group">
+                        <i class="fas fa-ship text-5xl text-[#4a5e3b] mb-6 group-hover:text-[#658451] transition-colors"></i>
+                        <h3 class="text-2xl text-white font-teko mb-3">ФЛОТ</h3>
+                        <p class="text-gray-500 mb-4">Морские операции. Контроль водных путей, десантные высадки и морская артиллерия.</p>
+                        <ul class="text-sm text-gray-600 space-y-1">
+                            <li>• Канонерки</li>
+                            <li>• Десантные корабли</li>
+                            <li>• Подводные лодки</li>
+                            <li>• Морская логистика</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Aviation -->
+            <div class="mb-20">
+                <h2 class="text-3xl font-bold text-white mb-8 border-l-4 border-[#658451] pl-4 font-teko">АВИАЦИЯ</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                    <div class="tactical-border p-8 bg-[#121410] hover:bg-[#1a1d18] transition-all group">
+                        <i class="fas fa-jet-fighter text-5xl text-[#4a5e3b] mb-6 group-hover:text-[#658451] transition-colors"></i>
+                        <h3 class="text-2xl text-white font-teko mb-3">ИСТРЕБИТЕЛИ</h3>
+                        <p class="text-gray-500 mb-4">Воздушное превосходство и перехват вражеской авиации.</p>
+                        <ul class="text-sm text-gray-600 space-y-1">
+                            <li>• Воздушный бой</li>
+                            <li>• Эскорт</li>
+                            <li>• Разведка с воздуха</li>
+                        </ul>
+                    </div>
+                    <div class="tactical-border p-8 bg-[#121410] hover:bg-[#1a1d18] transition-all group">
+                        <i class="fas fa-plane text-5xl text-[#4a5e3b] mb-6 group-hover:text-[#658451] transition-colors"></i>
+                        <h3 class="text-2xl text-white font-teko mb-3">БОМБЕРЫ</h3>
+                        <p class="text-gray-500 mb-4">Стратегические удары по вражеским позициям.</p>
+                        <ul class="text-sm text-gray-600 space-y-1">
+                            <li>• Ковровые бомбардировки</li>
+                            <li>• Точечные удары</li>
+                            <li>• Поддержка наступления</li>
+                        </ul>
+                    </div>
+                    <div class="tactical-border p-8 bg-[#121410] hover:bg-[#1a1d18] transition-all group">
+                        <i class="fas fa-parachute-box text-5xl text-[#4a5e3b] mb-6 group-hover:text-[#658451] transition-colors"></i>
+                        <h3 class="text-2xl text-white font-teko mb-3">ДЕСАНТ</h3>
+                        <p class="text-gray-500 mb-4">Высадка войск в тылу врага для стратегических операций.</p>
+                        <ul class="text-sm text-gray-600 space-y-1">
+                            <li>• Парашютные высадки</li>
+                            <li>• Захват позиций</li>
+                            <li>• Диверсии в тылу</li>
+                        </ul>
+                    </div>
+                    <div class="tactical-border p-8 bg-[#121410] hover:bg-[#1a1d18] transition-all group">
+                        <i class="fas fa-plane-departure text-5xl text-[#4a5e3b] mb-6 group-hover:text-[#658451] transition-colors"></i>
+                        <h3 class="text-2xl text-white font-teko mb-3">ГРУЗОВЫЕ</h3>
+                        <p class="text-gray-500 mb-4">Воздушная логистика и переброска ресурсов.</p>
+                        <ul class="text-sm text-gray-600 space-y-1">
+                            <li>• Доставка припасов</li>
+                            <li>• Эвакуация раненых</li>
+                            <li>• Переброска войск</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Special Operations -->
+            <div>
+                <h2 class="text-3xl font-bold text-white mb-8 border-l-4 border-[#658451] pl-4 font-teko">СПЕЦИАЛЬНЫЕ ОПЕРАЦИИ</h2>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <div class="tactical-border p-8 bg-[#121410] hover:bg-[#1a1d18] transition-all group">
+                        <i class="fas fa-hammer text-5xl text-[#4a5e3b] mb-6 group-hover:text-[#658451] transition-colors"></i>
+                        <h3 class="text-2xl text-white font-teko mb-3">СТРОИТЕЛЬСТВО</h3>
+                        <p class="text-gray-500">Возведение укреплений, баз и оборонительных линий. Инженерная поддержка фронта.</p>
+                    </div>
+                    <div class="tactical-border p-8 bg-[#121410] hover:bg-[#1a1d18] transition-all group">
+                        <i class="fas fa-satellite-dish text-5xl text-[#4a5e3b] mb-6 group-hover:text-[#658451] transition-colors"></i>
+                        <h3 class="text-2xl text-white font-teko mb-3">РАЗВЕДКА</h3>
+                        <p class="text-gray-500">Сбор информации о противнике. Наблюдательные посты и агентурная сеть.</p>
+                    </div>
+                    <div class="tactical-border p-8 bg-[#121410] hover:bg-[#1a1d18] transition-all group">
+                        <i class="fas fa-users-gear text-5xl text-[#4a5e3b] mb-6 group-hover:text-[#658451] transition-colors"></i>
+                        <h3 class="text-2xl text-white font-teko mb-3">КООРДИНАЦИЯ</h3>
+                        <p class="text-gray-500">Управление операциями, связь между подразделениями и стратегическое планирование.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Join CTA -->
+    <section class="py-20 bg-[#0f110e] border-t border-[#1a1d18]">
+        <div class="max-w-4xl mx-auto px-4 text-center">
+            <h2 class="text-4xl font-bold text-white mb-6 font-teko">НАЙДИ СВОЕ МЕСТО</h2>
+            <p class="text-gray-400 mb-8">Неважно, чем ты хочешь заниматься — у нас есть место для каждого</p>
+            <a href="join.html" class="inline-flex items-center gap-3 bg-[#658451] hover:bg-[#4d663d] text-white px-8 py-4 text-2xl font-teko uppercase tracking-wider transition-all">
+                Вступить в AFC <i class="fas fa-arrow-right"></i>
+            </a>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-[#050505] py-10 border-t border-[#1a1d18]">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row justify-between items-center gap-6">
+            <div class="flex items-center gap-3">
+                <img src="logo.png" alt="Logo" class="h-8 w-auto grayscale opacity-50">
+                <span class="text-gray-500 font-teko text-xl tracking-widest">&copy; 2026 AFC CLAN | сайт создан @ssbaxys</span>
+            </div>
+            
+            <div class="flex space-x-8">
+                <a href="https://discord.com/invite/join-afc" class="text-gray-500 hover:text-[#5865F2] transition-colors">
+                    <i class="fab fa-discord text-2xl"></i>
+                </a>
+                <a href="https://www.youtube.com/@wanted2127/videos" class="text-gray-500 hover:text-red-600 transition-colors">
+                    <i class="fab fa-youtube text-2xl"></i>
+                </a>
+            </div>
+        </div>
+    </footer>
+
+    <script src="app.js"></script>
+</body>
+</html>
