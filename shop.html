@@ -579,11 +579,12 @@
                 const adminControls = options.admin ? `
                     <div class="mt-3 grid grid-cols-1 sm:grid-cols-[auto_1fr] gap-2 items-center">
                         <span class="text-xs uppercase tracking-widest text-gray-500">Статус</span>
-                        <select class="admin-status bg-[#0a0b09] border border-[#3f4d36] text-white px-3 py-2 text-sm" data-id="${ticket.id}" data-uid="${ticket.uid}" ${isArchived ? 'disabled' : ''}>
+                        <select class="admin-status bg-[#0a0b09] border border-[#3f4d36] text-white px-3 py-2 text-sm" data-id="${ticket.id}" data-uid="${ticket.uid}">
                             <option value="Новый" ${ticket.status === 'Новый' ? 'selected' : ''}>Новый</option>
                             <option value="В работе" ${ticket.status === 'В работе' ? 'selected' : ''}>В работе</option>
                             <option value="Выполнен" ${ticket.status === 'Выполнен' ? 'selected' : ''}>Выполнен</option>
                             <option value="Отклонен" ${ticket.status === 'Отклонен' ? 'selected' : ''}>Отклонен</option>
+                            <option value="Архив" ${ticket.archived ? 'selected' : ''}>Архив</option>
                         </select>
                     </div>
                     <div class="mt-3 flex flex-wrap gap-2 text-xs">
@@ -643,12 +644,12 @@
         };
 
         const renderUserPreview = () => {
-            const preview = userTicketsCache.slice(0, 3);
+            const preview = userTicketsCache.filter(ticket => !ticket.archivedByUser).slice(0, 3);
             renderTicketCards(preview, userTicketsEl, { user: true });
         };
 
         const renderUserModal = () => {
-            const filtered = filterTickets(userTicketsCache, {
+            const filtered = filterTickets(userTicketsCache.filter(ticket => !ticket.archivedByUser), {
                 search: userSearch.value,
                 status: userStatusFilter.value,
                 date: userDateFilter.value
@@ -707,7 +708,11 @@
                     const userId = event.target.dataset.uid;
                     const newStatus = event.target.value;
                     const ticketRef = ref(db, `tickets/${userId}/${ticketId}`);
-                    await update(ticketRef, { status: newStatus });
+                    if (newStatus === 'Архив') {
+                        await update(ticketRef, { archived: true });
+                    } else {
+                        await update(ticketRef, { status: newStatus, archived: false });
+                    }
                 });
             });
 
@@ -726,7 +731,7 @@
                     const ticketId = btn.dataset.id;
                     const userId = btn.dataset.uid;
                     const ticketRef = ref(db, `tickets/${userId}/${ticketId}`);
-                    await update(ticketRef, { archived: false });
+                    await update(ticketRef, { archived: false, archivedByUser: false });
                 });
             });
 
@@ -789,9 +794,9 @@
         };
 
         const updateStats = (tickets = []) => {
-            const active = tickets.filter(ticket => ticket.status === 'Новый' && !ticket.archivedByUser).length;
-            const progress = tickets.filter(ticket => ticket.status === 'В работе' && !ticket.archivedByUser).length;
-            const done = tickets.filter(ticket => ticket.status === 'Выполнен' && !ticket.archivedByUser).length;
+            const active = tickets.filter(ticket => ticket.status === 'Новый' && !ticket.archivedByUser && !ticket.archived).length;
+            const progress = tickets.filter(ticket => ticket.status === 'В работе' && !ticket.archivedByUser && !ticket.archived).length;
+            const done = tickets.filter(ticket => ticket.status === 'Выполнен' && !ticket.archivedByUser && !ticket.archived).length;
             document.getElementById('stat-active').textContent = active;
             document.getElementById('stat-progress').textContent = progress;
             document.getElementById('stat-done').textContent = done;

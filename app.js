@@ -268,9 +268,19 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const fetchSignature = async (url) => {
             const cacheBustUrl = `${url}?v=${Date.now()}`;
-            const response = await fetch(cacheBustUrl, { method: 'HEAD', cache: 'no-store' });
-            if (!response.ok) return '';
-            return `${response.headers.get('etag') || ''}-${response.headers.get('last-modified') || ''}-${response.headers.get('content-length') || ''}`;
+            try {
+                const headResponse = await fetch(cacheBustUrl, { method: 'HEAD', cache: 'no-store' });
+                if (headResponse.ok) {
+                    return `${headResponse.headers.get('etag') || ''}-${headResponse.headers.get('last-modified') || ''}-${headResponse.headers.get('content-length') || ''}`;
+                }
+            } catch (error) {
+                // Fallback to GET below
+            }
+
+            const getResponse = await fetch(cacheBustUrl, { method: 'GET', cache: 'no-store' });
+            if (!getResponse.ok) return '';
+            const text = await getResponse.text();
+            return `${getResponse.headers.get('etag') || ''}-${getResponse.headers.get('last-modified') || ''}-${text.length}`;
         };
 
         const showOverlay = () => {
