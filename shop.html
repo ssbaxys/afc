@@ -432,10 +432,12 @@
             noticeMessage.textContent = message;
             noticeConfirm.textContent = confirmText;
             noticeCancel.classList.add('hidden');
+            noticeCancel.disabled = true;
             noticeConfirm.onclick = () => {
                 noticeModal.classList.remove('active');
                 resolve(true);
             };
+            noticeCancel.onclick = null;
             noticeModal.classList.add('active');
         });
 
@@ -445,6 +447,7 @@
             noticeConfirm.textContent = confirmText;
             noticeCancel.textContent = cancelText;
             noticeCancel.classList.remove('hidden');
+            noticeCancel.disabled = false;
             noticeConfirm.onclick = () => {
                 noticeModal.classList.remove('active');
                 resolve(true);
@@ -789,7 +792,6 @@
                     const userId = btn.dataset.uid;
                     await remove(ref(db, `tickets/${userId}/${ticketId}`));
                     await remove(ref(db, `ticketChats/${ticketId}`));
-                    await openNotice('Тикет удалён', 'Заявка удалена без возможности восстановления.');
                 });
             });
         };
