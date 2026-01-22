@@ -433,11 +433,12 @@
             noticeConfirm.textContent = confirmText;
             noticeCancel.classList.add('hidden');
             noticeCancel.disabled = true;
-            noticeConfirm.onclick = () => {
+            noticeCancel.onclick = null;
+            noticeConfirm.onclick = (event) => {
+                event.preventDefault();
                 noticeModal.classList.remove('active');
                 resolve(true);
             };
-            noticeCancel.onclick = null;
             noticeModal.classList.add('active');
         });
 
@@ -448,11 +449,13 @@
             noticeCancel.textContent = cancelText;
             noticeCancel.classList.remove('hidden');
             noticeCancel.disabled = false;
-            noticeConfirm.onclick = () => {
+            noticeConfirm.onclick = (event) => {
+                event.preventDefault();
                 noticeModal.classList.remove('active');
                 resolve(true);
             };
-            noticeCancel.onclick = () => {
+            noticeCancel.onclick = (event) => {
+                event.preventDefault();
                 noticeModal.classList.remove('active');
                 resolve(false);
             };
