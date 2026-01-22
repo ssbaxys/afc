@@ -531,6 +531,22 @@ footer a:hover {
     animation: fadeInUp 0.35s ease;
 }
 
+#chat-modal .chat-bubble {
+    background: rgba(15, 18, 14, 0.9);
+}
+
+#chat-modal {
+    animation: fadeIn 0.2s ease;
+}
+
+#chat-modal .custom-scrollbar::-webkit-scrollbar {
+    width: 6px;
+}
+
+#chat-modal .custom-scrollbar::-webkit-scrollbar-thumb {
+    background: rgba(101, 132, 81, 0.4);
+}
+
 .pulse-dot {
     width: 10px;
     height: 10px;

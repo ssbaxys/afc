@@ -150,19 +150,7 @@
 
                     <div class="mt-10 tactical-border p-6 bg-[#0f110e] panel-glow">
                         <h3 class="text-2xl text-white font-teko mb-2">ЧАТ ПО ТИКЕТУ</h3>
-                        <p class="text-gray-500 text-sm mb-4">Выберите тикет справа, чтобы открыть переписку.</p>
-                        <div id="chat-wrapper" class="hidden">
-                            <div class="mb-4 text-sm text-gray-400">Тикет: <span id="chat-ticket-title" class="text-white"></span></div>
-                            <div id="chat-messages" class="space-y-3 max-h-[320px] overflow-y-auto pr-2"></div>
-                            <div class="mt-4 space-y-3">
-                                <textarea id="chat-input" rows="3" class="w-full bg-[#0a0b09] border border-[#3f4d36] text-white px-4 py-3 focus:outline-none focus:border-[#658451]" placeholder="Сообщение..."></textarea>
-                                <div class="flex flex-col sm:flex-row gap-3 items-start sm:items-center">
-                                    <input type="file" id="chat-file" accept="image/*" class="text-sm text-gray-400">
-                                    <button id="chat-send" class="ml-auto bg-[#3f4d36] hover:bg-[#2d3826] text-white px-5 py-2 font-teko uppercase tracking-wider transition-all">Отправить</button>
-                                </div>
-                                <p class="text-xs text-gray-500">Фото прикрепляются как изображение в чате (до 1 МБ).</p>
-                            </div>
-                        </div>
+                        <p class="text-gray-500 text-sm">Откройте тикет в списке справа — переписка появится в модальном окне.</p>
                     </div>
                 </div>
 
@@ -196,6 +184,29 @@
             </div>
         </div>
     </section>
+
+    <div id="chat-modal" class="fixed inset-0 z-[1100] hidden items-center justify-center bg-black/70 backdrop-blur-sm">
+        <div class="bg-[#0f110e] border border-[#3f4d36] w-[95%] max-w-2xl max-h-[85vh] flex flex-col shadow-2xl">
+            <div class="flex items-center justify-between px-5 py-4 border-b border-[#1a1d18]">
+                <div>
+                    <h3 class="text-2xl text-white font-teko">Чат по тикету</h3>
+                    <p class="text-xs uppercase tracking-widest text-gray-500">Тикет: <span id="chat-ticket-title" class="text-[#658451]"></span></p>
+                </div>
+                <button id="chat-modal-close" class="text-gray-400 hover:text-white text-2xl">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="p-5 overflow-y-auto flex-1" id="chat-messages"></div>
+            <div class="p-5 border-t border-[#1a1d18] space-y-3">
+                <textarea id="chat-input" rows="3" class="w-full bg-[#0a0b09] border border-[#3f4d36] text-white px-4 py-3 focus:outline-none focus:border-[#658451]" placeholder="Сообщение..."></textarea>
+                <div class="flex flex-col sm:flex-row gap-3 items-start sm:items-center">
+                    <input type="file" id="chat-file" accept="image/*" class="text-sm text-gray-400">
+                    <button id="chat-send" class="ml-auto bg-[#3f4d36] hover:bg-[#2d3826] text-white px-5 py-2 font-teko uppercase tracking-wider transition-all">Отправить</button>
+                </div>
+                <p class="text-xs text-gray-500">Фото прикрепляются как изображение в чате (до 1 МБ).</p>
+            </div>
+        </div>
+    </div>
 
     <footer class="bg-[#050505] py-10 border-t border-[#1a1d18]">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row justify-between items-center gap-6">
@@ -251,7 +262,8 @@
         const userTicketsEl = document.getElementById('user-tickets');
         const adminTickets = document.getElementById('admin-tickets');
 
-        const chatWrapper = document.getElementById('chat-wrapper');
+        const chatModal = document.getElementById('chat-modal');
+        const chatModalClose = document.getElementById('chat-modal-close');
         const chatTicketTitle = document.getElementById('chat-ticket-title');
         const chatMessages = document.getElementById('chat-messages');
         const chatInput = document.getElementById('chat-input');
@@ -393,28 +405,47 @@
                 }
                 chatMessages.innerHTML = list.map(msg => {
                     const time = new Date(msg.createdAt).toLocaleString('ru-RU');
+                    const adminBadge = msg.isAdmin ? '<span class="text-red-300 font-bold">[ADMIN]</span> ' : '';
                     return `
                         <div class="chat-bubble">
-                            <div class="text-xs text-gray-500 mb-2">${msg.author} • ${time}</div>
+                            <div class="text-xs text-gray-500 mb-2">${adminBadge}${msg.author} • ${time}</div>
                             <div class="text-gray-300 text-sm">${msg.text || ''}</div>
                             ${msg.image ? `<img src="${msg.image}" alt="photo" class="mt-2 max-h-48 border border-[#3f4d36]">` : ''}
                         </div>
                     `;
                 }).join('');
+                chatMessages.scrollTop = chatMessages.scrollHeight;
             });
+        };
+
+        const openChatModal = (ticketId, title) => {
+            activeTicketId = ticketId;
+            chatTicketTitle.textContent = title;
+            chatModal.classList.remove('hidden');
+            chatModal.classList.add('flex');
+            loadChats(activeTicketId);
+        };
+
+        const closeChatModal = () => {
+            chatModal.classList.add('hidden');
+            chatModal.classList.remove('flex');
+            activeTicketId = null;
         };
 
         const attachChatHandlers = () => {
             document.querySelectorAll('.open-chat').forEach(btn => {
                 btn.addEventListener('click', () => {
-                    activeTicketId = btn.dataset.id;
-                    activeTicketOwner = btn.dataset.owner;
-                    chatTicketTitle.textContent = btn.dataset.title;
-                    chatWrapper.classList.remove('hidden');
-                    loadChats(activeTicketId);
+                    openChatModal(btn.dataset.id, btn.dataset.title);
                 });
             });
         };
+
+        chatModalClose.addEventListener('click', closeChatModal);
+        chatModal.addEventListener('click', (event) => {
+            if (event.target === chatModal) {
+                closeChatModal();
+            }
+        });
 
         const updateStats = (tickets = []) => {
             const active = tickets.filter(ticket => ticket.status === 'Новый').length;
@@ -548,13 +579,14 @@
 
             const userRef = ref(db, `users/${user.uid}`);
             const userSnapshot = await get(userRef);
-            const userData = userSnapshot.val() || { nick: 'Боец' };
+            const userData = userSnapshot.val() || { nick: 'Боец', admin: false };
 
             const messageRef = push(ref(db, `ticketChats/${activeTicketId}`));
             await set(messageRef, {
                 author: userData.nick || 'Боец',
                 text,
                 image: imageData,
+                isAdmin: userData.admin === true,
                 createdAt: new Date().toISOString()
             });
 
